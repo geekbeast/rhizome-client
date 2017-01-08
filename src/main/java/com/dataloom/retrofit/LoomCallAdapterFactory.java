@@ -8,6 +8,8 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Charsets;
+
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Response;
@@ -32,7 +34,7 @@ public class LoomCallAdapterFactory extends CallAdapter.Factory {
                         logger.error( "Call failed with code {} and message {} and error body {}",
                                 response.code(),
                                 response.message(),
-                                IOUtils.toString( response.errorBody().byteStream() ) );
+                                IOUtils.toString( response.errorBody().byteStream(), Charsets.UTF_8 ) );
                         return null;
                     }
                     return response.body();

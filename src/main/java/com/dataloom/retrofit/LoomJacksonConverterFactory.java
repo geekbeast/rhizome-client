@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
+import com.google.common.base.Charsets;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -68,7 +69,7 @@ public class LoomJacksonConverterFactory extends Converter.Factory {
                 }
             } else if ( StringUtils.startsWith( rawContentType,
                     com.google.common.net.MediaType.PLAIN_TEXT_UTF_8.type() ) ) {
-                return IOUtils.toString( responseBody.byteStream() );
+                return IOUtils.toString( responseBody.byteStream(), Charsets.UTF_8 );
             }
             return null;
         };

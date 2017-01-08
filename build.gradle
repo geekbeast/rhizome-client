@@ -9,12 +9,10 @@ plugins {
 apply from: "https://raw.githubusercontent.com/kryptnostic/gradles/master/kryptnostic.gradle"
 
 description = "Rhizome client libraries"
-group = "com.dataloom"
+group = "com.kryptnostic"
 ext.projectName = "rhizome-client"
 
 sourceCompatibility=JavaVersion.VERSION_1_8
-ext.guava_version='19.0'
-
 dependencies { 
     /*
      * SL4J
