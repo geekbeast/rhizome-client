@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public abstract class AbstractBaseJacksonSerializationTest<T> {
     protected static final ObjectMapper mapper = ObjectMappers.getJsonMapper();
     protected static final ObjectMapper smile  = ObjectMappers.getSmileMapper();
-
+    
     @Test
     public void testSerdes() throws IOException {
         T data = getSampleData();
@@ -81,6 +81,8 @@ public abstract class AbstractBaseJacksonSerializationTest<T> {
         }
     }
 
+    protected void configureSerializers() {}
+    
     protected abstract T getSampleData();
 
     protected abstract Class<T> getClazz();

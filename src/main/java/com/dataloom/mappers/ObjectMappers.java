@@ -2,8 +2,6 @@ package com.dataloom.mappers;
 
 import java.util.Map;
 
-import com.dataloom.data.serializers.FullQualifedNameJacksonDeserializer;
-import com.dataloom.data.serializers.FullQualifedNameJacksonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.smile.SmileFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -52,8 +50,6 @@ public final class ObjectMappers {
         mapper.registerModule( new GuavaModule() );
         mapper.registerModule( new JodaModule() );
         mapper.registerModule( new AfterburnerModule() );
-        FullQualifedNameJacksonSerializer.registerWithMapper( mapper );
-        FullQualifedNameJacksonDeserializer.registerWithMapper( mapper );
         return mapper;
     }
 
