@@ -1,6 +1,7 @@
 package com.dataloom.mappers;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.smile.SmileFactory;
@@ -67,5 +68,9 @@ public final class ObjectMappers {
 
     public static ObjectMapper getMapper( Mapper type ) {
         return mappers.get( type );
+    }
+
+    public static void foreach( Consumer<ObjectMapper> object ) {
+        mappers.values().forEach( object );
     }
 }
