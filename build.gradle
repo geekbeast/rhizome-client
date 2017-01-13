@@ -10,7 +10,11 @@ apply from: "https://raw.githubusercontent.com/kryptnostic/gradles/master/kryptn
 
 description = "Rhizome client libraries"
 group = "com.kryptnostic"
+
 ext.projectName = "rhizome-client"
+ext.scmUrl = 'scm:git:https://github.com/dataloom/rhizome-client.git'
+ext.connectionUrl = 'scm:git:https://github.com/dataloom/rhizome-client.git'
+ext.developerConnectionUrl = 'scm:git:https://github.com/dataloom/rhizome-client.git'
 
 sourceCompatibility=JavaVersion.VERSION_1_8
 dependencies { 
