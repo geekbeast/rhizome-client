@@ -11,18 +11,14 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.google.common.collect.Maps;
 
-/**
- * @author Matthew Tamayo-Rios &lt;matthew@kryptnostic.com&gt; 
- *
- */
-public final class ObjectMapperRegistry {
+public final class ObjectMappers {
     public enum Mapper {
         YAML,
         SMILE,
         JSON
     }
-    
-    //TODO: Add options that for configuring serialization types supported.
+
+    // TODO: Add options that for configuring serialization types supported.
 
     private static final Map<Mapper, ObjectMapper> mappers = Maps.newEnumMap( Mapper.class );
 
@@ -32,15 +28,7 @@ public final class ObjectMapperRegistry {
         mappers.put( Mapper.JSON, createJsonMapper() );
     }
 
-    private ObjectMapperRegistry() {}
-
-    public static ObjectMapper registerIfAbsent( Mapper type, ObjectMapper mapper ) {
-        return mappers.putIfAbsent( type, mapper );
-    }
-
-    public static ObjectMapper getMapper( Mapper type ) {
-        return mappers.get( type );
-    }
+    private ObjectMappers() {}
 
     protected static ObjectMapper createYamlMapper() {
         ObjectMapper yamlMapper = new ObjectMapper( new YAMLFactory() );
@@ -63,23 +51,26 @@ public final class ObjectMapperRegistry {
         mapper.registerModule( new GuavaModule() );
         mapper.registerModule( new JodaModule() );
         mapper.registerModule( new AfterburnerModule() );
-        mapper.registerModule( new JodaModule() );
         return mapper;
     }
 
     public static ObjectMapper getYamlMapper() {
-        return ObjectMapperRegistry.getMapper( Mapper.YAML );
+        return ObjectMappers.getMapper( Mapper.YAML );
     }
 
     public static ObjectMapper getSmileMapper() {
-        return ObjectMapperRegistry.getMapper( Mapper.SMILE );
+        return ObjectMappers.getMapper( Mapper.SMILE );
     }
 
     public static ObjectMapper getJsonMapper() {
-        return ObjectMapperRegistry.getMapper( Mapper.JSON );
+        return ObjectMappers.getMapper( Mapper.JSON );
     }
 
-    public static void foreach( Consumer<ObjectMapper> c ) {
-        mappers.values().forEach( c );
+    public static ObjectMapper getMapper( Mapper type ) {
+        return mappers.get( type );
+    }
+
+    public static void foreach( Consumer<ObjectMapper> object ) {
+        mappers.values().forEach( object );
     }
 }
