@@ -9,10 +9,10 @@ import org.junit.Test;
 import com.dataloom.mappers.ObjectMappers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public abstract class BaseJacksonSerializationTest<T> {
+public abstract class AbstractJacksonSerializationTest<T> {
     protected static final ObjectMapper mapper = ObjectMappers.getJsonMapper();
     protected static final ObjectMapper smile  = ObjectMappers.getSmileMapper();
-
+    
     @Test
     public void testSerdes() throws IOException {
         T data = getSampleData();
@@ -45,7 +45,7 @@ public abstract class BaseJacksonSerializationTest<T> {
         c.accept( mapper );
         c.accept( smile );
     }
-    
+
     protected static class SerializationResult {
         private String jsonString;
         private byte[] jsonBytes;
@@ -81,7 +81,10 @@ public abstract class BaseJacksonSerializationTest<T> {
         }
     }
 
+    protected void configureSerializers() {}
+    
     protected abstract T getSampleData();
 
     protected abstract Class<T> getClazz();
+
 }

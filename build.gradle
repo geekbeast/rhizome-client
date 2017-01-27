@@ -5,6 +5,9 @@ plugins {
   id 'jacoco'
 }
 
+/*
+ * This block must remain above the apply block as it controls publishing" 
+ */
 ext.projectName = "rhizome-client"
 ext.scmUrl = 'scm:git:https://github.com/dataloom/rhizome-client.git'
 ext.connectionUrl = 'scm:git:https://github.com/dataloom/rhizome-client.git'
