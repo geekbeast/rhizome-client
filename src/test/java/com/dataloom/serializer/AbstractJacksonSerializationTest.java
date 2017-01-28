@@ -1,90 +1,67 @@
 package com.dataloom.serializer;
 
-import java.io.IOException;
-import java.util.function.Consumer;
-
+import com.dataloom.mappers.ObjectMappers;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.dataloom.mappers.ObjectMappers;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.function.Consumer;
 
 public abstract class AbstractJacksonSerializationTest<T> {
     protected static final ObjectMapper mapper = ObjectMappers.getJsonMapper();
     protected static final ObjectMapper smile  = ObjectMappers.getSmileMapper();
-    
-    @Test
-    public void testSerdes() throws IOException {
-        T data = getSampleData();
-        SerializationResult result = serialize( data );
-        Assert.assertEquals( data, deserializeJsonString( result ) );
-        Assert.assertEquals( data, deserializeJsonBytes( result ) );
-        Assert.assertEquals( data, deserializeSmileBytes( result ) );
-    }
-
-    protected SerializationResult serialize( T data ) throws IOException {
-        return new SerializationResult()
-                .setJsonString( mapper.writeValueAsString( data ) )
-                .setJsonBytes( mapper.writeValueAsBytes( data ) )
-                .setSmileBytes( smile.writeValueAsBytes( data ) );
-    }
-
-    protected T deserializeJsonString( SerializationResult result ) throws IOException {
-        return mapper.readValue( result.getJsonString(), getClazz() );
-    }
-
-    protected T deserializeJsonBytes( SerializationResult result ) throws IOException {
-        return mapper.readValue( result.getJsonBytes(), getClazz() );
-    }
-
-    protected T deserializeSmileBytes( SerializationResult result ) throws IOException {
-        return smile.readValue( result.getSmileBytes(), getClazz() );
-    }
 
     protected static void registerModule( Consumer<ObjectMapper> c ) {
         c.accept( mapper );
         c.accept( smile );
     }
 
-    protected static class SerializationResult {
-        private String jsonString;
-        private byte[] jsonBytes;
-        private byte[] smileBytes;
-
-        public SerializationResult() {}
-
-        public String getJsonString() {
-            return jsonString;
-        }
-
-        public byte[] getJsonBytes() {
-            return jsonBytes;
-        }
-
-        public byte[] getSmileBytes() {
-            return smileBytes;
-        }
-
-        public SerializationResult setJsonString( String jsonString ) {
-            this.jsonString = jsonString;
-            return this;
-        }
-
-        public SerializationResult setJsonBytes( byte[] jsonBytes ) {
-            this.jsonBytes = jsonBytes;
-            return this;
-        }
-
-        public SerializationResult setSmileBytes( byte[] smileBytes ) {
-            this.smileBytes = smileBytes;
-            return this;
-        }
+    @Test
+    public void testSerdes() throws IOException {
+        T data = getSampleData();
+        SerializationResult<T> result = serialize( data );
+        Assert.assertEquals( data, result.deserializeJsonString( getClazz() ) );
+        Assert.assertEquals( data, result.deserializeJsonBytes( getClazz() ) );
+        Assert.assertEquals( data, result.deserializeSmileBytes( getClazz() ) );
     }
 
-    protected void configureSerializers() {}
-    
+    protected SerializationResult serialize( T data ) throws IOException {
+        return new SerializationResult( mapper.writeValueAsString( data ),
+                mapper.writeValueAsBytes( data ),
+                smile.writeValueAsBytes( data ) );
+    }
+
+    protected void configureSerializers() {
+    }
+
     protected abstract T getSampleData();
 
     protected abstract Class<T> getClazz();
 
+    protected static class SerializationResult<T> {
+        private final String jsonString;
+        private final byte[] jsonBytes;
+        private final byte[] smileBytes;
+
+        public SerializationResult( String jsonString, byte[] jsonBytes, byte[] smileBytes ) {
+            this.jsonString = jsonString;
+            this.jsonBytes = Arrays.copyOf( jsonBytes, jsonBytes.length );
+            this.smileBytes = Arrays.copyOf( smileBytes, smileBytes.length );
+        }
+
+        protected T deserializeJsonString( Class<T> clazz ) throws IOException {
+            return mapper.readValue( jsonString, clazz );
+        }
+
+        protected T deserializeJsonBytes( Class<T> clazz ) throws IOException {
+            return mapper.readValue( jsonBytes, clazz );
+        }
+
+        protected T deserializeSmileBytes( Class<T> clazz ) throws IOException {
+            return smile.readValue( smileBytes, clazz );
+        }
+    }
 }
+    
