@@ -3,6 +3,8 @@ plugins {
   id 'eclipse'
   id 'idea'
   id 'jacoco'
+  id 'checkstyle'
+  id 'findbugs'
 }
 
 /*
@@ -18,8 +20,32 @@ apply from: "https://raw.githubusercontent.com/kryptnostic/gradles/master/kryptn
 description = "Rhizome client libraries"
 group = "com.kryptnostic"
 
-
 sourceCompatibility=JavaVersion.VERSION_1_8
+
+
+def versions = [
+  checkstyle: '7.4',
+]
+
+checkstyle {
+  toolVersion = "${versions.checkstyle}"
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+
 dependencies { 
     /*
      * SL4J
