@@ -49,6 +49,8 @@ public class LoomJacksonConverterFactory extends Converter.Factory {
     public Converter<ResponseBody, ?> responseBodyConverter( Type type, Annotation[] annotations, Retrofit retrofit ) {
         if ( LoomByteConverterFactory.isByteArray( type ) ) {
             return null;
+        } else if ( LoomStringConverterFactory.isString( type ) ){
+            return null;
         }
 
         return responseBody -> {
@@ -83,7 +85,10 @@ public class LoomJacksonConverterFactory extends Converter.Factory {
             Retrofit retrofit ) {
         if ( LoomByteConverterFactory.isByteArray( type ) ) {
             return null;
+        } else if ( LoomStringConverterFactory.isString( type ) ){
+            return null;
         }
+        
         return obj -> RequestBody.create( MediaType.parse( JSON_UTF8_MIME_TYPE ),
                 objectMapper.writeValueAsBytes( obj ) );
     }
