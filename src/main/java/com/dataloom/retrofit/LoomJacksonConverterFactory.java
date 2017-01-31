@@ -31,6 +31,9 @@ import retrofit2.Retrofit;
 public class LoomJacksonConverterFactory extends Converter.Factory {
     private static final String JSON_MIME_TYPE      = "application/json";
     private static final String JSON_UTF8_MIME_TYPE = JSON_MIME_TYPE + "; charset=UTF-8";
+
+    private static final String PLAIN_TEXT_MIME_TYPE = "text/plain";
+
     private static final Logger logger              = LoggerFactory.getLogger( LoomJacksonConverterFactory.class );
     private final ObjectMapper  objectMapper;
 
@@ -48,8 +51,6 @@ public class LoomJacksonConverterFactory extends Converter.Factory {
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter( Type type, Annotation[] annotations, Retrofit retrofit ) {
         if ( LoomByteConverterFactory.isByteArray( type ) ) {
-            return null;
-        } else if ( LoomStringConverterFactory.isString( type ) ){
             return null;
         }
 
@@ -85,8 +86,8 @@ public class LoomJacksonConverterFactory extends Converter.Factory {
             Retrofit retrofit ) {
         if ( LoomByteConverterFactory.isByteArray( type ) ) {
             return null;
-        } else if ( LoomStringConverterFactory.isString( type ) ){
-            return null;
+        } else if ( type == String.class ){
+            return obj -> RequestBody.create( MediaType.parse( PLAIN_TEXT_MIME_TYPE ), (String) obj );
         }
         
         return obj -> RequestBody.create( MediaType.parse( JSON_UTF8_MIME_TYPE ),

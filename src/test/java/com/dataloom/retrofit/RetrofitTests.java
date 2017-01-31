@@ -23,7 +23,6 @@ public class RetrofitTests {
                 .build();
         Retrofit adapter = new Retrofit.Builder().baseUrl( "http://localhost:8081/rhizome/api/" ).client( httpClient )
                 .addConverterFactory( new LoomByteConverterFactory() )
-                .addConverterFactory( new LoomStringConverterFactory() )
                 .addConverterFactory( new LoomJacksonConverterFactory() )
                 .addCallAdapterFactory( new LoomCallAdapterFactory() ).build();
         Api api = adapter.create( Api.class );
