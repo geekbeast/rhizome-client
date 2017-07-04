@@ -63,6 +63,9 @@ dependencies {
     compile 'com.esotericsoftware:reflectasm:1.11.3'
     compile 'org.objenesis:objenesis:2.4'
 
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-ec2', version: '1.11.50'
+    compile 'com.amazonaws:aws-java-sdk-s3:1.11.50'
+
     compile "org.apache.commons:commons-lang3:${commonsLang_version}"
     compile "commons-io:commons-io:${commonsio_version}"
     
