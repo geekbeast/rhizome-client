@@ -84,7 +84,7 @@ public class Auth0Configuration implements Serializable {
         Preconditions.checkArgument( StringUtils.isNotBlank( clientSecret ), "Domain cannot be blank" );
         Preconditions.checkArgument( StringUtils.isNotBlank( securedRoute ), "Domain cannot be blank" );
         Preconditions.checkArgument( StringUtils.isNotBlank( authorityStrategy ),
-                "Authority strategyic cannot be blank" );
+                "Authority strategy cannot be blank" );
         Preconditions.checkArgument( StringUtils.isNotBlank( signingAlgorithm ), "Signing algorithm cannot be blank" );
         this.domain = domain;
         this.issuer = issuer;
