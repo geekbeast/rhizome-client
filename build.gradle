@@ -15,7 +15,7 @@ ext.scmUrl = 'scm:git:https://github.com/dataloom/rhizome-client.git'
 ext.connectionUrl = 'scm:git:https://github.com/dataloom/rhizome-client.git'
 ext.developerConnectionUrl = 'scm:git:https://github.com/dataloom/rhizome-client.git'
 
-apply from: "https://raw.githubusercontent.com/kryptnostic/gradles/master/kryptnostic.gradle"
+apply from: "https://raw.githubusercontent.com/openlattice/gradles/master/openlattice.gradle"
 
 description = "Rhizome client libraries"
 group = "com.kryptnostic"
