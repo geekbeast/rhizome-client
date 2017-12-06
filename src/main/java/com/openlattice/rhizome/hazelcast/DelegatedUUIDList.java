@@ -182,6 +182,10 @@ public class DelegatedUUIDList implements List<UUID> {
         uuids.forEach( action );
     }
 
+    @Override public String toString() {
+        return uuids.toString();
+    }
+
     public static DelegatedUUIDList wrap( List<UUID> uuids ) {
         return new DelegatedUUIDList( uuids );
     }
