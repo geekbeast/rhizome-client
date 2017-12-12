@@ -36,6 +36,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 /**
+ * Immutable delegated uuid list
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
 public class DelegatedUUIDList implements List<UUID> {
