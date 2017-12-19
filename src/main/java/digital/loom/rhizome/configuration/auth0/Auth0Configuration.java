@@ -1,37 +1,35 @@
 package digital.loom.rhizome.configuration.auth0;
 
-import java.io.Serializable;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.kryptnostic.rhizome.configuration.annotation.ReloadableConfiguration;
+import java.io.Serializable;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Json serializable POJO for Auth0 configuration values.
- * 
- * @author Matthew Tamayo-Rios &lt;matthew@kryptnostic.com&gt;
  *
+ * @author Matthew Tamayo-Rios &lt;matthew@kryptnostic.com&gt;
  */
 // TODO: Implement data serializable or identified data serializable
 @ReloadableConfiguration(
-    uri = "auth0.yaml" )
+        uri = "auth0.yaml" )
 public class Auth0Configuration implements Serializable {
-    private static final long      serialVersionUID            = 3802624515206194125L;
-    public static final String     DOMAIN_FIELD                = "domain";
-    public static final String     ISSUER_FIELD                = "issuer";
-    public static final String     CLIENT_ID_FIELD             = "clientId";
-    public static final String     CLIENT_SECRET_FIELD         = "clientSecret";
-    public static final String     SECURED_ROUTE_FIELD         = "securedRoute";
-    public static final String     AUTHORITY_STRATEGY_FIELD    = "authorityStrategy";
-    public static final String     SIGNING_ALGORITHM_FIELD     = "signingAlgorithm";
-    public static final String     BASE64_ENCODED_SECRET_FIELD = "base64EncodedSecret";
-    public static final String     PUBLIC_KEY_PATH_FIELD       = "publicKeyPath";
-    public static final String     TOKEN_FIELD                 = "token";
-
+    public static final  String DOMAIN_FIELD                = "domain";
+    public static final  String ISSUER_FIELD                = "issuer";
+    public static final  String AUDIENCE_FIELD              = "audience";
+    public static final  String CLIENT_ID_FIELD             = "clientId";
+    public static final  String CLIENT_SECRET_FIELD         = "clientSecret";
+    public static final  String SECURED_ROUTE_FIELD         = "securedRoute";
+    public static final  String AUTHORITY_STRATEGY_FIELD    = "authorityStrategy";
+    public static final  String SIGNING_ALGORITHM_FIELD     = "signingAlgorithm";
+    public static final  String BASE64_ENCODED_SECRET_FIELD = "base64EncodedSecret";
+    public static final  String PUBLIC_KEY_PATH_FIELD       = "publicKeyPath";
+    public static final  String TOKEN_FIELD                 = "token";
+    private static final long   serialVersionUID            = 3802624515206194125L;
+    private final String           audience;
     private final String           authorityStrategy;
     private final String           clientId;
     private final String           clientSecret;
@@ -46,6 +44,7 @@ public class Auth0Configuration implements Serializable {
     public Auth0Configuration(
             String domain,
             String issuer,
+            String audience,
             String clientId,
             String clientSecret,
             String securedRoute,
@@ -56,6 +55,7 @@ public class Auth0Configuration implements Serializable {
         this(
                 domain,
                 issuer,
+                audience,
                 clientId,
                 clientSecret,
                 securedRoute,
@@ -70,6 +70,7 @@ public class Auth0Configuration implements Serializable {
     public Auth0Configuration(
             @JsonProperty( DOMAIN_FIELD ) String domain,
             @JsonProperty( ISSUER_FIELD ) String issuer,
+            @JsonProperty( AUDIENCE_FIELD ) String audience,
             @JsonProperty( CLIENT_ID_FIELD ) String clientId,
             @JsonProperty( CLIENT_SECRET_FIELD ) String clientSecret,
             @JsonProperty( SECURED_ROUTE_FIELD ) String securedRoute,
@@ -79,15 +80,17 @@ public class Auth0Configuration implements Serializable {
             @JsonProperty( TOKEN_FIELD ) Optional<String> token,
             @JsonProperty( PUBLIC_KEY_PATH_FIELD ) Optional<String> publicKeyPath ) {
         Preconditions.checkArgument( StringUtils.isNotBlank( domain ), "Domain cannot be blank" );
-        Preconditions.checkArgument( StringUtils.isNotBlank( issuer ), "Domain cannot be blank" );
-        Preconditions.checkArgument( StringUtils.isNotBlank( clientId ), "Domain cannot be blank" );
-        Preconditions.checkArgument( StringUtils.isNotBlank( clientSecret ), "Domain cannot be blank" );
-        Preconditions.checkArgument( StringUtils.isNotBlank( securedRoute ), "Domain cannot be blank" );
+        Preconditions.checkArgument( StringUtils.isNotBlank( issuer ), "Issuer cannot be blank" );
+        Preconditions.checkArgument( StringUtils.isNotBlank( audience ), "Audience cannot be blank" );
+        Preconditions.checkArgument( StringUtils.isNotBlank( clientId ), "Client ID cannot be blank" );
+        Preconditions.checkArgument( StringUtils.isNotBlank( clientSecret ), "Client secret cannot be blank" );
+        Preconditions.checkArgument( StringUtils.isNotBlank( securedRoute ), "Secured route cannot be blank" );
         Preconditions.checkArgument( StringUtils.isNotBlank( authorityStrategy ),
                 "Authority strategy cannot be blank" );
         Preconditions.checkArgument( StringUtils.isNotBlank( signingAlgorithm ), "Signing algorithm cannot be blank" );
         this.domain = domain;
         this.issuer = issuer;
+        this.audience = audience;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.securedRoute = securedRoute;
@@ -108,6 +111,11 @@ public class Auth0Configuration implements Serializable {
     @JsonProperty( ISSUER_FIELD )
     public String getIssuer() {
         return issuer;
+    }
+
+    @JsonProperty( AUDIENCE_FIELD )
+    public String getAudience() {
+        return audience;
     }
 
     @JsonProperty( CLIENT_ID_FIELD )
