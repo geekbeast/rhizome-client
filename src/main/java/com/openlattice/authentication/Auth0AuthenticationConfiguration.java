@@ -23,13 +23,14 @@ package com.openlattice.authentication;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
+import java.io.Serializable;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
-public class Auth0AuthenticationConfiguration {
+public class Auth0AuthenticationConfiguration implements Serializable {
     public static final String ISSUER_FIELD                = "issuer";
     public static final String AUDIENCE_FIELD              = "audience";
     public static final String SECRET_FIELD                = "secret";
