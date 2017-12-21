@@ -22,10 +22,10 @@ package com.openlattice.authentication;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.kryptnostic.rhizome.configuration.annotation.ReloadableConfiguration;
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
@@ -64,7 +64,7 @@ public class Auth0Configuration implements Serializable {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.configurations = configurations;
-        this.token = token.or( "The token was not set. If you are expecting something here set it in auth0.yaml" );
+        this.token = token.orElse( "The token was not set. If you are expecting something here set it in auth0.yaml" );
         Preconditions.checkState( StringUtils.isNotBlank( this.token ), "Token cannot be blank." );
     }
 
