@@ -1,5 +1,7 @@
 package com.dataloom.mappers;
 
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -32,6 +34,7 @@ public final class ObjectMappers {
 
     protected static ObjectMapper createYamlMapper() {
         ObjectMapper yamlMapper = new ObjectMapper( new YAMLFactory() );
+        yamlMapper.registerModule( new Jdk8Module() );
         yamlMapper.registerModule( new GuavaModule() );
         yamlMapper.registerModule( new AfterburnerModule() );
         yamlMapper.registerModule( new JodaModule() );
@@ -40,6 +43,7 @@ public final class ObjectMappers {
 
     protected static ObjectMapper createSmileMapper() {
         ObjectMapper smileMapper = new ObjectMapper( new SmileFactory() );
+        smileMapper.registerModule( new Jdk8Module() );
         smileMapper.registerModule( new GuavaModule() );
         smileMapper.registerModule( new AfterburnerModule() );
         smileMapper.registerModule( new JodaModule() );
@@ -48,6 +52,7 @@ public final class ObjectMappers {
 
     protected static ObjectMapper createJsonMapper() {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule( new Jdk8Module() );
         mapper.registerModule( new GuavaModule() );
         mapper.registerModule( new JodaModule() );
         mapper.registerModule( new AfterburnerModule() );
