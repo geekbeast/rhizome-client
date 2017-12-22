@@ -23,28 +23,73 @@ package com.openlattice.rhizome.proxy;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Proxy.Type;
+import java.util.concurrent.TimeUnit;
+
+import com.dataloom.mappers.ObjectMappers;
+import com.dataloom.retrofit.LoomByteConverterFactory;
+import com.dataloom.retrofit.LoomCallAdapterFactory;
+import com.dataloom.retrofit.LoomJacksonConverterFactory;
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
 
 /**
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
 public class RetrofitBuilders {
-
-    public static OkHttpClient.Builder withProxyAndBasicAuth(
+    public static Retrofit.Builder proxiedJacksonWithBasicAuthRetrofit(
+            String url,
             String username,
             String password,
             String proxyHost,
             int proxyPort ) {
-        String authToken = Credentials.basic( username, password );
+        Retrofit.Builder builder = createBaseLoomRetrofitBuilder( url,
+                okHttpClientWithBasicAuthAndProxy( username, password, proxyHost, proxyPort ).build() );
+        return decorateWithLoomFactories( builder );
+    }
 
-        return new OkHttpClient.Builder().proxy( buildProxy( proxyHost, proxyPort ) )
+    public static OkHttpClient.Builder okHttpClientWithBasicAuthAndProxy(
+            String username,
+            String password,
+            String proxyHost,
+            int proxyPort ) {
+        OkHttpClient.Builder builder = okHttpClient();
+        builder = withProxy( builder, proxyHost, proxyPort );
+        return withBasicAuth( builder, username, password );
+    }
+
+    public static OkHttpClient.Builder okHttpClient() {
+        return new OkHttpClient.Builder()
+                .readTimeout( 0, TimeUnit.MILLISECONDS )
+                .writeTimeout( 0, TimeUnit.MILLISECONDS )
+                .connectTimeout( 0, TimeUnit.MILLISECONDS );
+    }
+
+    public static OkHttpClient.Builder withProxy( OkHttpClient.Builder builder, String proxyHost, int proxyPort ) {
+        return builder.proxy( buildProxy( proxyHost, proxyPort ) );
+    }
+
+    public static final OkHttpClient.Builder withBasicAuth(
+            OkHttpClient.Builder builder,
+            String username,
+            String password ) {
+        String authToken = Credentials.basic( username, password );
+        return builder
                 .addInterceptor( chain -> chain
                         .proceed( chain.request().newBuilder().addHeader( "Authorization", authToken ).build() ) );
-
     }
 
     public static Proxy buildProxy( String proxyHost, int proxyPort ) {
         return new Proxy( Type.SOCKS, new InetSocketAddress( proxyHost, proxyPort ) );
+    }
+
+    public static final Retrofit.Builder decorateWithLoomFactories( Retrofit.Builder builder ) {
+        return builder.addConverterFactory( new LoomByteConverterFactory() )
+                .addConverterFactory( new LoomJacksonConverterFactory( ObjectMappers.getJsonMapper() ) )
+                .addCallAdapterFactory( new LoomCallAdapterFactory() );
+    }
+
+    public static final Retrofit.Builder createBaseLoomRetrofitBuilder( String baseUrl, OkHttpClient httpClient ) {
+        return new Retrofit.Builder().baseUrl( baseUrl ).client( httpClient );
     }
 }
