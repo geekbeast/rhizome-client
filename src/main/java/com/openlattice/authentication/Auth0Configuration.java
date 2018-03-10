@@ -23,11 +23,12 @@ package com.openlattice.authentication;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.LoadingCache;
 import com.kryptnostic.rhizome.configuration.annotation.ReloadableConfiguration;
-
 import java.io.Serializable;
 import java.util.Set;
-
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -39,12 +40,13 @@ import org.apache.commons.lang3.StringUtils;
 @ReloadableConfiguration(
         uri = "auth0.yaml" )
 public class Auth0Configuration implements Serializable {
+    private static final long   serialVersionUID         = 3802624515206194125L;
     public static final  String DOMAIN_FIELD             = "domain";
     public static final  String CLIENT_SECRET_FIELD      = "clientSecret";
     public static final  String CLIENT_ID_FIELD          = "clientId";
     public static final  String CONFIGURATIONS_FIELD     = "configurations";
     public static final  String MANAGEMENT_API_URL_FIELD = "managementApiUrl";
-    private static final long   serialVersionUID         = 3802624515206194125L;
+
     private final String                                domain;
     private final String                                clientId;
     private final String                                clientSecret;
