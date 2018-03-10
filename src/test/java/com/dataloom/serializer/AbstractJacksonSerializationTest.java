@@ -4,6 +4,8 @@ import com.dataloom.mappers.ObjectMappers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -13,6 +15,8 @@ public abstract class AbstractJacksonSerializationTest<T> {
     protected static final ObjectMapper mapper = ObjectMappers.getJsonMapper();
     protected static final ObjectMapper smile  = ObjectMappers.getSmileMapper();
 
+    protected final Logger logger = LoggerFactory.getLogger( getClass() );
+    
     protected static void registerModule( Consumer<ObjectMapper> c ) {
         c.accept( mapper );
         c.accept( smile );
@@ -27,8 +31,8 @@ public abstract class AbstractJacksonSerializationTest<T> {
         Assert.assertEquals( data, result.deserializeSmileBytes( getClazz() ) );
     }
 
-    protected SerializationResult serialize( T data ) throws IOException {
-        return new SerializationResult( mapper.writeValueAsString( data ),
+    protected SerializationResult<T> serialize( T data ) throws IOException {
+        return new SerializationResult<T>( mapper.writeValueAsString( data ),
                 mapper.writeValueAsBytes( data ),
                 smile.writeValueAsBytes( data ) );
     }
@@ -61,6 +65,10 @@ public abstract class AbstractJacksonSerializationTest<T> {
 
         protected T deserializeSmileBytes( Class<T> clazz ) throws IOException {
             return smile.readValue( smileBytes, clazz );
+        }
+        
+        public String getJsonString() {
+            return jsonString;
         }
     }
 }

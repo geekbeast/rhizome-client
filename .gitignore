@@ -1,8 +1,9 @@
 .gradle/
 out/
+artifacts/
 bin/
 build/
-artifacts/
+out/
 src/main/webapp/auth/
 
 # IDE generated files
