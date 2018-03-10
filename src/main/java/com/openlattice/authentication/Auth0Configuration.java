@@ -24,9 +24,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
 import com.kryptnostic.rhizome.configuration.annotation.ReloadableConfiguration;
+
 import java.io.Serializable;
-import java.util.Optional;
 import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -38,17 +39,17 @@ import org.apache.commons.lang3.StringUtils;
 @ReloadableConfiguration(
         uri = "auth0.yaml" )
 public class Auth0Configuration implements Serializable {
-    public static final  String DOMAIN_FIELD         = "domain";
-    public static final  String CLIENT_SECRET_FIELD  = "clientSecret";
-    public static final  String CLIENT_ID_FIELD      = "clientId";
-    public static final  String CONFIGURATIONS_FIELD = "configurations";
-    public static final  String TOKEN_FIELD          = "token";
-    private static final long   serialVersionUID     = 3802624515206194125L;
+    public static final  String DOMAIN_FIELD             = "domain";
+    public static final  String CLIENT_SECRET_FIELD      = "clientSecret";
+    public static final  String CLIENT_ID_FIELD          = "clientId";
+    public static final  String CONFIGURATIONS_FIELD     = "configurations";
+    public static final  String MANAGEMENT_API_URL_FIELD = "managementApiUrl";
+    private static final long   serialVersionUID         = 3802624515206194125L;
     private final String                                domain;
     private final String                                clientId;
     private final String                                clientSecret;
     private final Set<Auth0AuthenticationConfiguration> configurations;
-    private final String                                token;
+    private final String                                managementApiUrl;
 
     @JsonCreator
     public Auth0Configuration(
@@ -56,16 +57,16 @@ public class Auth0Configuration implements Serializable {
             @JsonProperty( CLIENT_ID_FIELD ) String clientId,
             @JsonProperty( CLIENT_SECRET_FIELD ) String clientSecret,
             @JsonProperty( CONFIGURATIONS_FIELD ) Set<Auth0AuthenticationConfiguration> configurations,
-            @JsonProperty( TOKEN_FIELD ) Optional<String> token ) {
+            @JsonProperty( MANAGEMENT_API_URL_FIELD ) String managementApiUrl ) {
         Preconditions.checkArgument( StringUtils.isNotBlank( domain ), "Domain cannot be blank" );
         Preconditions.checkArgument( StringUtils.isNotBlank( clientId ), "Client ID cannot be blank" );
         Preconditions.checkArgument( StringUtils.isNotBlank( clientSecret ), "Client secret cannot be blank" );
+        Preconditions.checkArgument( StringUtils.isNotBlank( managementApiUrl ), "Management API URL cannot be blank" );
         this.domain = domain;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.configurations = configurations;
-        this.token = token.orElse( "The token was not set. If you are expecting something here set it in auth0.yaml" );
-        Preconditions.checkState( StringUtils.isNotBlank( this.token ), "Token cannot be blank." );
+        this.managementApiUrl = managementApiUrl;
     }
 
     @JsonProperty( DOMAIN_FIELD )
@@ -88,8 +89,8 @@ public class Auth0Configuration implements Serializable {
         return configurations;
     }
 
-    @JsonProperty( TOKEN_FIELD )
-    public String getToken() {
-        return token;
+    @JsonProperty( MANAGEMENT_API_URL_FIELD )
+    public String getManagementApiUrl() {
+        return managementApiUrl;
     }
 }
