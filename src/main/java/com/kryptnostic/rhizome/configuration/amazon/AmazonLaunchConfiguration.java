@@ -21,14 +21,11 @@
 
 package com.kryptnostic.rhizome.configuration.amazon;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
 public interface AmazonLaunchConfiguration {
+    String getBucket();
 
-    @JsonProperty( AwsLaunchConfiguration.BUCKET_FIELD ) String getBucket();
-
-    @JsonProperty( AwsLaunchConfiguration.FOLDER_FIELD ) String getFolder();
+    String getFolder();
 }
