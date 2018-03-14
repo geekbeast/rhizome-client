@@ -1,4 +1,4 @@
-package com.dataloom.retrofit;
+package com.openlattice.retrofit;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;

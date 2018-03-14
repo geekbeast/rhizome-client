@@ -1,4 +1,4 @@
-package com.dataloom.retrofit;
+package com.openlattice.retrofit;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;

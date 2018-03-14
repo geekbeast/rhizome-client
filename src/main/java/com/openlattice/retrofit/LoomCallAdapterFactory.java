@@ -1,4 +1,4 @@
-package com.dataloom.retrofit;
+package com.openlattice.retrofit;
 
 import com.google.common.base.Charsets;
 import java.io.IOException;
