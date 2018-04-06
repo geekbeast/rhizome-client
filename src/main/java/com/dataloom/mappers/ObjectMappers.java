@@ -37,6 +37,7 @@ public final class ObjectMappers {
         ObjectMapper yamlMapper = new ObjectMapper( new YAMLFactory() );
         yamlMapper.registerModule( new Jdk8Module() );
         yamlMapper.registerModule( new GuavaModule() );
+        yamlMapper.registerModule( new JavaTimeModule() );
         yamlMapper.registerModule( new AfterburnerModule() );
         yamlMapper.registerModule( new JodaModule() );
         yamlMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
