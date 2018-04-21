@@ -48,8 +48,10 @@ public final class ObjectMappers {
         ObjectMapper smileMapper = new ObjectMapper( new SmileFactory() );
         smileMapper.registerModule( new Jdk8Module() );
         smileMapper.registerModule( new GuavaModule() );
+        smileMapper.registerModule( new JavaTimeModule() );
         smileMapper.registerModule( new AfterburnerModule() );
         smileMapper.registerModule( new JodaModule() );
+        smileMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
         return smileMapper;
     }
 
