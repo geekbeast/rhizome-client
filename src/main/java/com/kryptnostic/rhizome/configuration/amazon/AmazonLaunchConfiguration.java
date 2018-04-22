@@ -21,10 +21,16 @@
 
 package com.kryptnostic.rhizome.configuration.amazon;
 
+import com.amazonaws.regions.Regions;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Optional;
+
 /**
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
 public interface AmazonLaunchConfiguration {
+    @JsonProperty( AwsLaunchConfiguration.BUCKET_FIELD ) Optional<Regions> getRegion();
+
     String getBucket();
 
     String getFolder();
