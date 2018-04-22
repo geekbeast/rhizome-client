@@ -40,7 +40,7 @@ public class AwsLaunchConfiguration implements AmazonLaunchConfiguration {
     public AwsLaunchConfiguration(
             @JsonProperty( BUCKET_FIELD ) String bucket,
             @JsonProperty( FOLDER_FIELD ) Optional<String> folder,
-            @JsonProperty( "REGION_FIELD" ) Optional<String> region ) {
+            @JsonProperty( REGION_FIELD ) Optional<String> region ) {
         Preconditions.checkArgument( StringUtils.isNotBlank( bucket ),
                 "S3 bucket for configuration must be specified." );
         this.bucket = bucket;
@@ -60,7 +60,7 @@ public class AwsLaunchConfiguration implements AmazonLaunchConfiguration {
     }
 
     @Override
-    @JsonProperty( BUCKET_FIELD )
+    @JsonProperty( REGION_FIELD )
     public Optional<Regions> getRegion() {
         return region;
     }
