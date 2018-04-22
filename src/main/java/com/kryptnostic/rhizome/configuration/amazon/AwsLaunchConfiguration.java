@@ -21,6 +21,7 @@
 package com.kryptnostic.rhizome.configuration.amazon;
 
 import com.amazonaws.regions.Regions;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -31,14 +32,15 @@ public class AwsLaunchConfiguration implements AmazonLaunchConfiguration {
     public static final  String FOLDER_FIELD   = "folder";
     public static final  String REGION_FIELD   = "region";
     private static final String DEFAULT_FOLDER = "";
-    private final String           bucket;
-    private final String           folder;
+    private final String            bucket;
+    private final String            folder;
     private final Optional<Regions> region;
 
+    @JsonCreator
     public AwsLaunchConfiguration(
             @JsonProperty( BUCKET_FIELD ) String bucket,
             @JsonProperty( FOLDER_FIELD ) Optional<String> folder,
-            @JsonProperty( "REGION_FIELD" ) Optional<Regions> region ) {
+            @JsonProperty( "REGION_FIELD" ) Optional<String> region ) {
         Preconditions.checkArgument( StringUtils.isNotBlank( bucket ),
                 "S3 bucket for configuration must be specified." );
         this.bucket = bucket;
@@ -54,7 +56,7 @@ public class AwsLaunchConfiguration implements AmazonLaunchConfiguration {
             this.folder = rawFolder;
         }
 
-        this.region = region;
+        this.region = region.isPresent() ? Optional.of( Regions.fromName( region.get() ) ) : Optional.absent();
     }
 
     @Override
