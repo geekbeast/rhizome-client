@@ -22,11 +22,10 @@ public class RetrofitTests {
                 } )
                 .build();
         Retrofit adapter = new Retrofit.Builder().baseUrl( "http://localhost:8081/rhizome/api/" ).client( httpClient )
-                .addConverterFactory( new LoomByteConverterFactory() )
-                .addConverterFactory( new LoomJacksonConverterFactory() )
-                .addCallAdapterFactory( new LoomCallAdapterFactory() ).build();
+                .addConverterFactory( new RhizomeByteConverterFactory() )
+                .addConverterFactory( new RhizomeJacksonConverterFactory() )
+                .addCallAdapterFactory( new RhizomeCallAdapterFactory() ).build();
         Api api = adapter.create( Api.class );
         api.post( M );
-
     }
 }

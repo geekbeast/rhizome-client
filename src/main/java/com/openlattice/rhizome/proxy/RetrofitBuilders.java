@@ -26,9 +26,9 @@ import java.net.Proxy.Type;
 import java.util.concurrent.TimeUnit;
 
 import com.dataloom.mappers.ObjectMappers;
-import com.openlattice.retrofit.LoomByteConverterFactory;
-import com.openlattice.retrofit.LoomCallAdapterFactory;
-import com.openlattice.retrofit.LoomJacksonConverterFactory;
+import com.openlattice.retrofit.RhizomeByteConverterFactory;
+import com.openlattice.retrofit.RhizomeCallAdapterFactory;
+import com.openlattice.retrofit.RhizomeJacksonConverterFactory;
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -43,9 +43,9 @@ public class RetrofitBuilders {
             String password,
             String proxyHost,
             int proxyPort ) {
-        Retrofit.Builder builder = createBaseLoomRetrofitBuilder( url,
+        Retrofit.Builder builder = createBaseRhizomeRetrofitBuilder( url,
                 okHttpClientWithBasicAuthAndProxy( username, password, proxyHost, proxyPort ).build() );
-        return decorateWithLoomFactories( builder );
+        return decorateWithRhizomeFactories( builder );
     }
 
     public static OkHttpClient.Builder okHttpClientWithBasicAuthAndProxy(
@@ -83,13 +83,13 @@ public class RetrofitBuilders {
         return new Proxy( Type.SOCKS, new InetSocketAddress( proxyHost, proxyPort ) );
     }
 
-    public static final Retrofit.Builder decorateWithLoomFactories( Retrofit.Builder builder ) {
-        return builder.addConverterFactory( new LoomByteConverterFactory() )
-                .addConverterFactory( new LoomJacksonConverterFactory( ObjectMappers.getJsonMapper() ) )
-                .addCallAdapterFactory( new LoomCallAdapterFactory() );
+    public static final Retrofit.Builder decorateWithRhizomeFactories( Retrofit.Builder builder ) {
+        return builder.addConverterFactory( new RhizomeByteConverterFactory() )
+                .addConverterFactory( new RhizomeJacksonConverterFactory( ObjectMappers.getJsonMapper() ) )
+                .addCallAdapterFactory( new RhizomeCallAdapterFactory() );
     }
 
-    public static final Retrofit.Builder createBaseLoomRetrofitBuilder( String baseUrl, OkHttpClient httpClient ) {
+    public static final Retrofit.Builder createBaseRhizomeRetrofitBuilder( String baseUrl, OkHttpClient httpClient ) {
         return new Retrofit.Builder().baseUrl( baseUrl ).client( httpClient );
     }
 }

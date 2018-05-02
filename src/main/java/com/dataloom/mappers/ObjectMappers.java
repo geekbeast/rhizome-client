@@ -60,7 +60,7 @@ public final class ObjectMappers {
         mapper.registerModule( new Jdk8Module() );
         mapper.registerModule( new JavaTimeModule() );
         mapper.registerModule( new GuavaModule() );
-//        mapper.registerModule( new JodaModule() );
+        mapper.registerModule( new JodaModule() );
         mapper.registerModule( new AfterburnerModule() );
         mapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
         return mapper;
