@@ -1,4 +1,4 @@
-package com.dataloom.serializer;
+package com.openlattice.serializer;
 
 import com.dataloom.mappers.ObjectMappers;
 import com.fasterxml.jackson.databind.ObjectMapper;

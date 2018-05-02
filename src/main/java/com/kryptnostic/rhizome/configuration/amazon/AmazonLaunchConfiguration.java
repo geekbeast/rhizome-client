@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017. OpenLattice, Inc
+ * Copyright (C) 2018. OpenLattice, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,61 +16,22 @@
  *
  * You can contact the owner of the copyright at support@openlattice.com
  *
+ *
  */
 
 package com.kryptnostic.rhizome.configuration.amazon;
 
+import com.amazonaws.regions.Regions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
-import com.kryptnostic.rhizome.configuration.annotation.ReloadableConfiguration;
-import org.apache.commons.lang3.StringUtils;
 
 /**
- * @author Matthew Tamayo-Rios &lt;matthew@kryptnostic.com&gt;
+ * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
-@ReloadableConfiguration(
-        uri = "aws.yaml" )
-public class AmazonLaunchConfiguration {
-    public static final  String BUCKET_FIELD   = "bucket";
-    public static final  String FOLDER_FIELD   = "folder";
-    private static final String DEFAULT_FOLDER = "";
-    private final String bucket;
-    private final String folder;
+public interface AmazonLaunchConfiguration {
+    @JsonProperty( AwsLaunchConfiguration.BUCKET_FIELD ) Optional<Regions> getRegion();
 
-    public AmazonLaunchConfiguration(
-            @JsonProperty( BUCKET_FIELD ) String bucket,
-            @JsonProperty( FOLDER_FIELD ) Optional<String> folder ) {
-        Preconditions.checkArgument( StringUtils.isNotBlank( bucket ),
-                "S3 bucket for configuration must be specified." );
-        this.bucket = bucket;
-        String rawFolder = folder.or( DEFAULT_FOLDER );
+    String getBucket();
 
-        while ( StringUtils.endsWith( rawFolder, "/" ) ) {
-            StringUtils.removeEnd( rawFolder, "/" );
-        }
-        // We shouldn't prefix
-        if ( StringUtils.isNotBlank( rawFolder ) ) {
-            this.folder = rawFolder + "/";
-        } else {
-            this.folder = rawFolder;
-        }
-
-    }
-
-    @JsonProperty( BUCKET_FIELD )
-    public String getBucket() {
-        return bucket;
-    }
-
-    @JsonProperty( FOLDER_FIELD )
-    public String getFolder() {
-        return folder;
-    }
-
-    @Override
-    public String toString() {
-        return "AmazonLaunchConfiguration [bucket=" + bucket + ", folder=" + folder + "]";
-    }
-
+    String getFolder();
 }

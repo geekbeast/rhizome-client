@@ -1,4 +1,4 @@
-package com.dataloom.retrofit;
+package com.openlattice.retrofit;
 
 import com.google.common.base.Charsets;
 import java.io.IOException;
@@ -12,8 +12,8 @@ import retrofit2.CallAdapter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class LoomCallAdapterFactory extends CallAdapter.Factory {
-    private static final Logger logger = LoggerFactory.getLogger( LoomCallAdapterFactory.class );
+public class RhizomeCallAdapterFactory extends CallAdapter.Factory {
+    private static final Logger logger = LoggerFactory.getLogger( RhizomeCallAdapterFactory.class );
 
     @Override
     public CallAdapter<?, ?> get( Type returnType, Annotation[] annotations, Retrofit retrofit ) {

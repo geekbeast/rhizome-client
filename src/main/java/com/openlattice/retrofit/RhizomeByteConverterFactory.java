@@ -1,4 +1,4 @@
-package com.dataloom.retrofit;
+package com.openlattice.retrofit;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -12,9 +12,9 @@ import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 
-public class LoomByteConverterFactory extends Converter.Factory {
+public class RhizomeByteConverterFactory extends Converter.Factory {
     private static final String BYTE_MIME_TYPE = "application/octet-stream";
-    private static final Logger logger         = LoggerFactory.getLogger( LoomByteConverterFactory.class );
+    private static final Logger logger         = LoggerFactory.getLogger( RhizomeByteConverterFactory.class );
 
     @Override
     public Converter<ResponseBody, byte[]> responseBodyConverter(

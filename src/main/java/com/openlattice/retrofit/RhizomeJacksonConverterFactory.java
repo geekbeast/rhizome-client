@@ -1,4 +1,4 @@
-package com.dataloom.retrofit;
+package com.openlattice.retrofit;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -28,29 +28,29 @@ import retrofit2.Retrofit;
  * @author Matthew Tamayo-Rios &lt;matthew@kryptnostic.com&gt;
  *
  */
-public class LoomJacksonConverterFactory extends Converter.Factory {
+public class RhizomeJacksonConverterFactory extends Converter.Factory {
     private static final String JSON_MIME_TYPE      = "application/json";
     private static final String JSON_UTF8_MIME_TYPE = JSON_MIME_TYPE + "; charset=UTF-8";
 
     private static final String PLAIN_TEXT_MIME_TYPE = "text/plain";
 
-    private static final Logger logger              = LoggerFactory.getLogger( LoomJacksonConverterFactory.class );
+    private static final Logger logger              = LoggerFactory.getLogger( RhizomeJacksonConverterFactory.class );
     private final ObjectMapper  objectMapper;
 
-    public LoomJacksonConverterFactory() {
+    public RhizomeJacksonConverterFactory() {
         this( new ObjectMapper()
                 .registerModule( new GuavaModule() )
                 .registerModule( new JodaModule() )
                 .registerModule( new AfterburnerModule() ) );
     }
 
-    public LoomJacksonConverterFactory( ObjectMapper mapper ) {
+    public RhizomeJacksonConverterFactory( ObjectMapper mapper ) {
         this.objectMapper = mapper;
     }
 
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter( Type type, Annotation[] annotations, Retrofit retrofit ) {
-        if ( LoomByteConverterFactory.isByteArray( type ) ) {
+        if ( RhizomeByteConverterFactory.isByteArray( type ) ) {
             return null;
         }
 
@@ -84,7 +84,7 @@ public class LoomJacksonConverterFactory extends Converter.Factory {
             Annotation[] parameterAnnotations,
             Annotation[] methodAnnotations,
             Retrofit retrofit ) {
-        if ( LoomByteConverterFactory.isByteArray( type ) ) {
+        if ( RhizomeByteConverterFactory.isByteArray( type ) ) {
             return null;
         } else if ( type == String.class ){
             return obj -> RequestBody.create( MediaType.parse( PLAIN_TEXT_MIME_TYPE ), (String) obj );
