@@ -1,5 +1,5 @@
 .gradle/
-.kryptnostic/
+out/
 artifacts/
 bin/
 build/
