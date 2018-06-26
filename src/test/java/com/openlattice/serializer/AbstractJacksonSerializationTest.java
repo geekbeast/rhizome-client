@@ -26,6 +26,7 @@ public abstract class AbstractJacksonSerializationTest<T> {
     public void testSerdes() throws IOException {
         T data = getSampleData();
         SerializationResult<T> result = serialize( data );
+        logResult( result );
         Assert.assertEquals( data, result.deserializeJsonString( getClazz() ) );
         Assert.assertEquals( data, result.deserializeJsonBytes( getClazz() ) );
         Assert.assertEquals( data, result.deserializeSmileBytes( getClazz() ) );
@@ -37,6 +38,7 @@ public abstract class AbstractJacksonSerializationTest<T> {
                 smile.writeValueAsBytes( data ) );
     }
 
+    protected void logResult( SerializationResult<T> result ) {}
     protected void configureSerializers() {
     }
 
