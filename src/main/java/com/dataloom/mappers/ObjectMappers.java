@@ -78,6 +78,10 @@ public final class ObjectMappers {
         return ObjectMappers.getMapper( Mapper.JSON );
     }
 
+    public static ObjectMapper newJsonMapper() {
+        return createJsonMapper();
+    }
+
     public static ObjectMapper getMapper( Mapper type ) {
         return mappers.get( type );
     }
