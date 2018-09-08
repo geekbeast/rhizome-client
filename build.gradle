@@ -26,14 +26,6 @@ group = "com.openlattice"
 sourceCompatibility = JavaVersion.VERSION_1_10
 
 
-def versions = [
-        checkstyle: '7.4',
-]
-
-checkstyle {
-    toolVersion = "${versions.checkstyle}"
-}
-
 spotbugs {
     toolVersion = '3.1.5'
 }
@@ -44,14 +36,6 @@ tasks.withType(com.github.spotbugs.SpotBugsTask) {
         html.enabled = true
     }
 }
-
-tasks.withType(Checkstyle) {
-    reports {
-        xml.enabled = false
-        html.enabled = true
-    }
-}
-
 
 dependencies {
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
