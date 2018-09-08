@@ -23,7 +23,7 @@ apply plugin: 'kotlin'
 description = "Rhizome client libraries"
 group = "com.openlattice"
 
-sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_10
 
 
 def versions = [
