@@ -1,5 +1,8 @@
 package com.openlattice.retrofit;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -39,9 +42,12 @@ public class RhizomeJacksonConverterFactory extends Converter.Factory {
 
     public RhizomeJacksonConverterFactory() {
         this( new ObjectMapper()
+                .registerModule( new Jdk8Module() )
+                .registerModule( new JavaTimeModule() )
                 .registerModule( new GuavaModule() )
                 .registerModule( new JodaModule() )
                 .registerModule( new AfterburnerModule() ) );
+        objectMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
     }
 
     public RhizomeJacksonConverterFactory( ObjectMapper mapper ) {

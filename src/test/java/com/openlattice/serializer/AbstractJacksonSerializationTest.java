@@ -11,6 +11,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
+/**
+ * Base class for writing jackson serialization tests.
+ * @param <T> The type whose serialization will be tested.
+ */
 public abstract class AbstractJacksonSerializationTest<T> {
     protected static final ObjectMapper mapper = ObjectMappers.getJsonMapper();
     protected static final ObjectMapper smile  = ObjectMappers.getSmileMapper();
@@ -26,21 +30,24 @@ public abstract class AbstractJacksonSerializationTest<T> {
     public void testSerdes() throws IOException {
         T data = getSampleData();
         SerializationResult<T> result = serialize( data );
+        logResult( result );
         Assert.assertEquals( data, result.deserializeJsonString( getClazz() ) );
         Assert.assertEquals( data, result.deserializeJsonBytes( getClazz() ) );
         Assert.assertEquals( data, result.deserializeSmileBytes( getClazz() ) );
     }
 
     protected SerializationResult<T> serialize( T data ) throws IOException {
-        return new SerializationResult<T>( mapper.writeValueAsString( data ),
+        return new SerializationResult<>( mapper.writeValueAsString( data ),
                 mapper.writeValueAsBytes( data ),
                 smile.writeValueAsBytes( data ) );
     }
 
+    protected void logResult( SerializationResult<T> result ) {}
+
     protected void configureSerializers() {
     }
 
-    protected abstract T getSampleData();
+    protected abstract T getSampleData() throws IOException;
 
     protected abstract Class<T> getClazz();
 

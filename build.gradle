@@ -1,11 +1,11 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.2.30'
     id 'eclipse'
     id 'idea'
     id 'jacoco'
-    id 'checkstyle'
-    id 'findbugs'
+    id 'com.github.spotbugs' version '1.6.2'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.51'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.2.51'
 }
 
 /*
@@ -22,36 +22,27 @@ apply plugin: 'kotlin'
 description = "Rhizome client libraries"
 group = "com.openlattice"
 
-sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_10
 
 
-def versions = [
-        checkstyle: '7.4',
-]
-
-checkstyle {
-    toolVersion = "${versions.checkstyle}"
+spotbugs {
+    toolVersion = '3.1.5'
 }
 
-tasks.withType(FindBugs) {
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
     reports {
         xml.enabled = false
         html.enabled = true
     }
 }
-
-tasks.withType(Checkstyle) {
-    reports {
-        xml.enabled = false
-        html.enabled = true
-    }
-}
-
 
 dependencies {
-    /*
-     * SL4J
-     */
+    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
+    compileOnly 'net.jcip:jcip-annotations:1.0'
+    compileOnly 'com.github.spotbugs:spotbugs-annotations:3.1.3'
+    testCompileOnly 'net.jcip:jcip-annotations:1.0'
+    testCompileOnly 'com.github.spotbugs:spotbugs-annotations:3.1.3'
+
     compile group: "org.slf4j", name: "slf4j-api", version: "${slf4j_version}"
 
     /*
@@ -79,15 +70,6 @@ dependencies {
 
     compile "com.squareup.retrofit2:retrofit:${retrofit2_version}"
 
-    /*
-     * JACKSON SERIALIZATION
-     * YAML via SnakeYaml
-     * Afterburner for faster serialization
-     * Guava integration
-     * Smile for binary serialization
-     * Jersey integration
-     * Jaxb annotation support
-     */
     compile "com.fasterxml.jackson.core:jackson-core:${jackson_version}"
     compile "com.fasterxml.jackson.core:jackson-databind:${jackson_version}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-guava:${jackson_version}"
