@@ -3,7 +3,6 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'jacoco'
-    id 'checkstyle'
     id 'com.github.spotbugs' version '1.6.2'
     id 'org.jetbrains.kotlin.jvm' version '1.2.51'
     id 'org.jetbrains.kotlin.plugin.spring' version '1.2.51'
@@ -23,16 +22,8 @@ apply plugin: 'kotlin'
 description = "Rhizome client libraries"
 group = "com.openlattice"
 
-sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_10
 
-
-def versions = [
-        checkstyle: '7.4',
-]
-
-checkstyle {
-    toolVersion = "${versions.checkstyle}"
-}
 
 spotbugs {
     toolVersion = '3.1.5'
@@ -44,14 +35,6 @@ tasks.withType(com.github.spotbugs.SpotBugsTask) {
         html.enabled = true
     }
 }
-
-tasks.withType(Checkstyle) {
-    reports {
-        xml.enabled = false
-        html.enabled = true
-    }
-}
-
 
 dependencies {
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
