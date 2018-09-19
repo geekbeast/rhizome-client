@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 
 /**
  * Base class for writing jackson serialization tests.
+ *
  * @param <T> The type whose serialization will be tested.
  */
 public abstract class AbstractJacksonSerializationTest<T> {
@@ -20,11 +21,6 @@ public abstract class AbstractJacksonSerializationTest<T> {
     protected static final ObjectMapper smile  = ObjectMappers.getSmileMapper();
 
     protected final Logger logger = LoggerFactory.getLogger( getClass() );
-    
-    protected static void registerModule( Consumer<ObjectMapper> c ) {
-        c.accept( mapper );
-        c.accept( smile );
-    }
 
     @Test
     public void testSerdes() throws IOException {
@@ -42,7 +38,8 @@ public abstract class AbstractJacksonSerializationTest<T> {
                 smile.writeValueAsBytes( data ) );
     }
 
-    protected void logResult( SerializationResult<T> result ) {}
+    protected void logResult( SerializationResult<T> result ) {
+    }
 
     protected void configureSerializers() {
     }
@@ -50,6 +47,11 @@ public abstract class AbstractJacksonSerializationTest<T> {
     protected abstract T getSampleData() throws IOException;
 
     protected abstract Class<T> getClazz();
+
+    protected static void registerModule( Consumer<ObjectMapper> c ) {
+        c.accept( mapper );
+        c.accept( smile );
+    }
 
     protected static class SerializationResult<T> {
         private final String jsonString;
@@ -73,7 +75,7 @@ public abstract class AbstractJacksonSerializationTest<T> {
         protected T deserializeSmileBytes( Class<T> clazz ) throws IOException {
             return smile.readValue( smileBytes, clazz );
         }
-        
+
         public String getJsonString() {
             return jsonString;
         }
