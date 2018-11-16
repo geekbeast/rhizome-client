@@ -22,7 +22,7 @@ description = "Rhizome client libraries"
 group = "com.openlattice"
 
 sourceCompatibility = JavaVersion.VERSION_1_10
-argetCompatibility = JavaVersion.VERSION_1_10
+targetCompatibility = JavaVersion.VERSION_1_10
 
 
 spotbugs {
