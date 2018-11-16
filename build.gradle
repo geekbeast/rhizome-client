@@ -1,5 +1,7 @@
-repositories {
-    mavenCentral()
+buildscript {
+    repositories {
+        mavenCentral()
+    }
 }
 
 plugins {
