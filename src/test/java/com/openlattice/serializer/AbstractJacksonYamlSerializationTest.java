@@ -63,6 +63,11 @@ public abstract class AbstractJacksonYamlSerializationTest<T> extends AbstractJa
 
     protected abstract Class<T> getClazz();
 
+    public static void registerModule( Consumer<ObjectMapper> c ) {
+        AbstractJacksonSerializationTest.registerModule( c );
+        c.accept( yaml );
+    }
+
     protected static class YamlSerializationResult<T> extends SerializationResult<T> {
         private final String yamlString;
 

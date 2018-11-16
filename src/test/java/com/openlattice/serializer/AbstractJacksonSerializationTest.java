@@ -3,6 +3,8 @@ package com.openlattice.serializer;
 import com.dataloom.mappers.ObjectMappers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +21,12 @@ import java.util.function.Consumer;
 public abstract class AbstractJacksonSerializationTest<T> {
     protected static final ObjectMapper mapper = ObjectMappers.getJsonMapper();
     protected static final ObjectMapper smile  = ObjectMappers.getSmileMapper();
-
-    protected final Logger logger = LoggerFactory.getLogger( getClass() );
+    protected final        Logger       logger = LoggerFactory.getLogger( getClass() );
 
     @Test
     public void testSerdes() throws IOException {
         T data = getSampleData();
+
         SerializationResult<T> result = serialize( data );
         logResult( result );
         Assert.assertEquals( data, result.deserializeJsonString( getClazz() ) );
@@ -41,14 +43,11 @@ public abstract class AbstractJacksonSerializationTest<T> {
     protected void logResult( SerializationResult<T> result ) {
     }
 
-    protected void configureSerializers() {
-    }
-
     protected abstract T getSampleData() throws IOException;
 
     protected abstract Class<T> getClazz();
 
-    protected static void registerModule( Consumer<ObjectMapper> c ) {
+    public static void registerModule( Consumer<ObjectMapper> c ) {
         c.accept( mapper );
         c.accept( smile );
     }
