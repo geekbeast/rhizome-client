@@ -10,6 +10,7 @@ import com.google.common.io.Resources;
 import com.kryptnostic.rhizome.configuration.annotation.ReloadableConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,11 @@ import java.nio.charset.StandardCharsets;
 public class ResourceConfigurationLoader {
     private static final Logger       logger = LoggerFactory.getLogger( ResourceConfigurationLoader.class );
     private static final ObjectMapper mapper = ObjectMappers.getYamlMapper();
+
+    @Nullable
+    public static ObjectMapper getYamlMapper() {
+        return mapper;
+    }
 
     public static <T> T loadConfiguration( Class<T> clazz ) {
         String uri = getReloadableConfigurationUri( clazz );
