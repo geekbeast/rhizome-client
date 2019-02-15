@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import javax.annotation.Nullable;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public class RhizomeCallAdapterFactory extends CallAdapter.Factory {
                 return returnType;
             }
 
-            @Override public Object adapt( Call call ) {
+            @Override public @Nullable Object adapt( Call call ) {
                 try {
                     Response response = call.execute();
                     if ( response.code() >= 400 ) {
