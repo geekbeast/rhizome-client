@@ -3,6 +3,8 @@ package com.openlattice.serializer;
 import com.dataloom.mappers.ObjectMappers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,22 +15,18 @@ import java.util.function.Consumer;
 
 /**
  * Base class for writing jackson serialization tests.
+ *
  * @param <T> The type whose serialization will be tested.
  */
 public abstract class AbstractJacksonSerializationTest<T> {
     protected static final ObjectMapper mapper = ObjectMappers.getJsonMapper();
     protected static final ObjectMapper smile  = ObjectMappers.getSmileMapper();
-
-    protected final Logger logger = LoggerFactory.getLogger( getClass() );
-    
-    protected static void registerModule( Consumer<ObjectMapper> c ) {
-        c.accept( mapper );
-        c.accept( smile );
-    }
+    protected final        Logger       logger = LoggerFactory.getLogger( getClass() );
 
     @Test
     public void testSerdes() throws IOException {
         T data = getSampleData();
+
         SerializationResult<T> result = serialize( data );
         logResult( result );
         Assert.assertEquals( data, result.deserializeJsonString( getClazz() ) );
@@ -42,14 +40,17 @@ public abstract class AbstractJacksonSerializationTest<T> {
                 smile.writeValueAsBytes( data ) );
     }
 
-    protected void logResult( SerializationResult<T> result ) {}
-
-    protected void configureSerializers() {
+    protected void logResult( SerializationResult<T> result ) {
     }
 
     protected abstract T getSampleData() throws IOException;
 
     protected abstract Class<T> getClazz();
+
+    public static void registerModule( Consumer<ObjectMapper> c ) {
+        c.accept( mapper );
+        c.accept( smile );
+    }
 
     protected static class SerializationResult<T> {
         private final String jsonString;
@@ -73,7 +74,7 @@ public abstract class AbstractJacksonSerializationTest<T> {
         protected T deserializeSmileBytes( Class<T> clazz ) throws IOException {
             return smile.readValue( smileBytes, clazz );
         }
-        
+
         public String getJsonString() {
             return jsonString;
         }

@@ -1,8 +1,10 @@
 package com.dataloom.mappers;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -40,7 +42,9 @@ public final class ObjectMappers {
         yamlMapper.registerModule( new JavaTimeModule() );
         yamlMapper.registerModule( new AfterburnerModule() );
         yamlMapper.registerModule( new JodaModule() );
+        yamlMapper.registerModule( new KotlinModule() );
         yamlMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
+        yamlMapper.disable( DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE );
         return yamlMapper;
     }
 
@@ -51,7 +55,9 @@ public final class ObjectMappers {
         smileMapper.registerModule( new JavaTimeModule() );
         smileMapper.registerModule( new AfterburnerModule() );
         smileMapper.registerModule( new JodaModule() );
+        smileMapper.registerModule( new KotlinModule() );
         smileMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
+        smileMapper.disable( DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE );
         return smileMapper;
     }
 
@@ -62,7 +68,9 @@ public final class ObjectMappers {
         mapper.registerModule( new GuavaModule() );
         mapper.registerModule( new JodaModule() );
         mapper.registerModule( new AfterburnerModule() );
+        mapper.registerModule( new KotlinModule() );
         mapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
+        mapper.disable( DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE );
         return mapper;
     }
 
