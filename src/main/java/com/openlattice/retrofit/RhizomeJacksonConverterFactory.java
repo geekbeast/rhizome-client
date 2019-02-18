@@ -1,5 +1,6 @@
 package com.openlattice.retrofit;
 
+import com.dataloom.mappers.ObjectMappers;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -27,8 +28,6 @@ import retrofit2.Retrofit;
 
 /**
  * A {@link Factory} for serialization / deserialization using jackson for retrofit 2.
- * 
- * @author Matthew Tamayo-Rios &lt;matthew@kryptnostic.com&gt;
  *
  */
 public class RhizomeJacksonConverterFactory extends Converter.Factory {
@@ -37,17 +36,11 @@ public class RhizomeJacksonConverterFactory extends Converter.Factory {
 
     private static final String PLAIN_TEXT_MIME_TYPE = "text/plain";
 
-    private static final Logger logger              = LoggerFactory.getLogger( RhizomeJacksonConverterFactory.class );
-    private final ObjectMapper  objectMapper;
+    private static final Logger       logger = LoggerFactory.getLogger( RhizomeJacksonConverterFactory.class );
+    private final        ObjectMapper objectMapper;
 
     public RhizomeJacksonConverterFactory() {
-        this( new ObjectMapper()
-                .registerModule( new Jdk8Module() )
-                .registerModule( new JavaTimeModule() )
-                .registerModule( new GuavaModule() )
-                .registerModule( new JodaModule() )
-                .registerModule( new AfterburnerModule() ) );
-        objectMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
+        this( ObjectMappers.newJsonMapper() );
     }
 
     public RhizomeJacksonConverterFactory( ObjectMapper mapper ) {
@@ -92,10 +85,10 @@ public class RhizomeJacksonConverterFactory extends Converter.Factory {
             Retrofit retrofit ) {
         if ( RhizomeByteConverterFactory.isByteArray( type ) ) {
             return null;
-        } else if ( type == String.class ){
+        } else if ( type == String.class ) {
             return obj -> RequestBody.create( MediaType.parse( PLAIN_TEXT_MIME_TYPE ), (String) obj );
         }
-        
+
         return obj -> RequestBody.create( MediaType.parse( JSON_UTF8_MIME_TYPE ),
                 objectMapper.writeValueAsBytes( obj ) );
     }

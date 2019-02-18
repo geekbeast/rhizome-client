@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.rmi.ServerException;
 import javax.annotation.Nullable;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -27,11 +28,16 @@ public class RhizomeCallAdapterFactory extends CallAdapter.Factory {
             @Override public @Nullable Object adapt( Call call ) {
                 try {
                     Response response = call.execute();
-                    if ( response.code() >= 400 ) {
+                    final var code = response.code();
+                    if ( code >= 400 ) {
+                        final var responseBody = IOUtils.toString( response.errorBody().byteStream(), Charsets.UTF_8 );
                         logger.error( "Call failed with code {} and message {} and error body {}",
                                 response.code(),
                                 response.message(),
-                                IOUtils.toString( response.errorBody().byteStream(), Charsets.UTF_8 ) );
+                                 responseBody);
+                        if( code >=500 && code<600) {
+                            throw new ServerException( responseBody );
+                        }
                         return null;
                     }
                     return response.body();
