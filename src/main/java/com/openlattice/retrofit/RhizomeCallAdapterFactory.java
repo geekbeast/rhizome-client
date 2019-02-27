@@ -18,7 +18,7 @@ public class RhizomeCallAdapterFactory extends CallAdapter.Factory {
 
     @Override
     public CallAdapter<?, ?> get( Type returnType, Annotation[] annotations, Retrofit retrofit ) {
-        return new CallAdapter<Object, Object>() {
+        return new CallAdapter<>() {
             @Override
             public Type responseType() {
                 return returnType;
