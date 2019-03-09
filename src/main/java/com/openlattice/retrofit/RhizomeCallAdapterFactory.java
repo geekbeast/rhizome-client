@@ -36,7 +36,7 @@ public class RhizomeCallAdapterFactory extends CallAdapter.Factory {
                                 responseBody );
                         if ( code >= 400 && code < 600 ) {
                             final var message = call.request().url().toString();
-                            throw new RhizomeRetrofitCallException( "Retrofit API call to " + message + "failed",
+                            throw new RhizomeRetrofitCallException( "Retrofit API call to " + message + " failed",
                                     responseBody,
                                     response.code() );
                         }
