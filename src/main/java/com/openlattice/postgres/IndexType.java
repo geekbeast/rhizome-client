@@ -24,7 +24,7 @@ package com.openlattice.postgres;
  * We currently only support the following index types. In the future we may support gist and btree_gin types
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
-public enum IndexMethod {
+public enum IndexType {
     BTREE,
     HASH,
     GIN,
