@@ -34,7 +34,7 @@ public class RhizomeCallAdapterFactory extends CallAdapter.Factory {
 
                         final var responseBody = IOUtils.toString( response.errorBody().byteStream(), Charsets.UTF_8 );
                         logger.error( "Call to endpoint {} failed with code {} and message {} and error body {}",
-                                url
+                                url,
                                 response.code(),
                                 response.message(),
                                 responseBody );
