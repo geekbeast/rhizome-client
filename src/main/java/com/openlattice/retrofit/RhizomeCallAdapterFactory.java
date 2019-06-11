@@ -24,7 +24,8 @@ public class RhizomeCallAdapterFactory extends CallAdapter.Factory {
                 return returnType;
             }
 
-            @Override public @Nullable Object adapt( Call call ) {
+            @Override
+            public @Nullable Object adapt( Call call ) {
                 try {
                     Response response = call.execute();
                     final var code = response.code();
@@ -34,19 +35,18 @@ public class RhizomeCallAdapterFactory extends CallAdapter.Factory {
                                 response.code(),
                                 response.message(),
                                 responseBody );
-                        if ( code >= 400 && code < 600 ) {
-                            final var message = call.request().url().toString();
-                            throw new RhizomeRetrofitCallException( "Retrofit API call to " + message + " failed",
-                                    responseBody,
-                                    response.code() );
-                        }
-                        return null;
+
+                        //Always thrown an exception
+                        final var message = call.request().url().toString();
+
+                        throw new RhizomeRetrofitCallException( "Retrofit API call to " + message + " failed.",
+                                responseBody,
+                                response.code() );
                     }
                     return response.body();
                 } catch ( IOException e ) {
                     final var message = call.request().url().toString();
                     throw new RhizomeRetrofitCallFailedException( "Retrofit call " + message + " failed.", e );
-
                 }
             }
 
