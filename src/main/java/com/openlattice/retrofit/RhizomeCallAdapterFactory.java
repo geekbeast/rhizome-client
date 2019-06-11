@@ -30,16 +30,18 @@ public class RhizomeCallAdapterFactory extends CallAdapter.Factory {
                     Response response = call.execute();
                     final var code = response.code();
                     if ( code >= 400 ) {
+                        final var url = call.request().url().toString();
+
                         final var responseBody = IOUtils.toString( response.errorBody().byteStream(), Charsets.UTF_8 );
-                        logger.error( "Call failed with code {} and message {} and error body {}",
+                        logger.error( "Call to endpoint {} failed with code {} and message {} and error body {}",
+                                url
                                 response.code(),
                                 response.message(),
                                 responseBody );
 
                         //Always thrown an exception
-                        final var message = call.request().url().toString();
 
-                        throw new RhizomeRetrofitCallException( "Retrofit API call to " + message + " failed.",
+                        throw new RhizomeRetrofitCallException( "Retrofit API call to " + url + " failed.",
                                 responseBody,
                                 response.code() );
                     }
