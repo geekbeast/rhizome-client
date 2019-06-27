@@ -18,26 +18,38 @@ public class RhizomeCallAdapterFactory extends CallAdapter.Factory {
 
     @Override
     public CallAdapter<?, ?> get( Type returnType, Annotation[] annotations, Retrofit retrofit ) {
-        return new CallAdapter<Object, Object>() {
+        return new CallAdapter<>() {
             @Override
             public Type responseType() {
                 return returnType;
             }
 
-            @Override public @Nullable Object adapt( Call call ) {
+            @Override
+            public @Nullable Object adapt( Call call ) {
+
                 try {
                     Response response = call.execute();
-                    if ( response.code() >= 400 ) {
-                        logger.error( "Call failed with code {} and message {} and error body {}",
+                    final var code = response.code();
+                    if ( code >= 400 ) {
+                        final var url = call.request().url().toString();
+
+                        final var responseBody = IOUtils.toString( response.errorBody().byteStream(), Charsets.UTF_8 );
+                        logger.error( "Call to endpoint {} failed with code {} and message {} and error body {}",
+                                url,
                                 response.code(),
                                 response.message(),
-                                IOUtils.toString( response.errorBody().byteStream(), Charsets.UTF_8 ) );
-                        return null;
+                                responseBody );
+
+                        //Always thrown an exception
+
+                        throw new RhizomeRetrofitCallException( "Retrofit API call to " + url + " failed.",
+                                responseBody,
+                                response.code() );
                     }
                     return response.body();
                 } catch ( IOException e ) {
-                    logger.error( "Call failed.", e );
-                    return null;
+                    final var message = call.request().url().toString();
+                    throw new RhizomeRetrofitCallFailedException( "Retrofit call " + message + " failed.", e );
                 }
             }
 
