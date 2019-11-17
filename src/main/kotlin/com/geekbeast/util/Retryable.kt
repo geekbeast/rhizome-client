@@ -48,13 +48,13 @@ open class RetryStrategy(val strategy: (Long) -> Long, private var currentDelayM
     }
 }
 
-public inline fun <T, R> T.attempt(retryStrategy: RetryStrategy, maxAttempts: Int, block: T.() -> R): R {
+inline fun <T, R> T.attempt(retryStrategy: RetryStrategy, maxAttempts: Int, block: T.() -> R): R {
     for (i in 0 until maxAttempts) {
         try {
             return block()
         } catch (ex: Exception) {
             val logger = LoggerFactory.getLogger((this ?: Retryable)::class.java)
-            logger.error("Error occured while attempting to perform retryable operation.", ex)
+            logger.error("Error occured while attempting to perform retryable operation. Retrying...", ex)
 
             retryStrategy.backoff()
         }
@@ -77,12 +77,17 @@ open class ExponentialBackoff @JvmOverloads constructor(
 open class QuadraticBackoff(
         private val maxInterval: Long
 ) : RetryStrategy(
-        { currentInterval -> max(maxInterval, (currentInterval + 2 * sqrt(currentInterval.toDouble())).toLong()) }
-) 
+        { currentInterval ->
+            max(
+                    maxInterval,
+                    (currentInterval + RandomUtils.nextLong(1, 100) + 2 * sqrt(currentInterval.toDouble()).toLong())
+            )
+        }
+)
 
 open class LinearBackoff(
         val maxInterval: Long,
         val offset: Long
 ) : RetryStrategy(
-        { currentInterval -> max(maxInterval, currentInterval + offset) }
+        { currentInterval -> max(maxInterval, currentInterval + RandomUtils.nextLong(1, 100) + offset) }
 )
