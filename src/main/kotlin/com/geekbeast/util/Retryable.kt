@@ -49,13 +49,12 @@ open class RetryStrategy(val strategy: (Long) -> Long, private var currentDelayM
 }
 
 inline fun <T, R> T.attempt(retryStrategy: RetryStrategy, maxAttempts: Int, block: T.() -> R): R {
-    for (i in 0 until maxAttempts) {
+    for (i in 1..maxAttempts) {
         try {
             return block()
         } catch (ex: Exception) {
             val logger = LoggerFactory.getLogger((this ?: Retryable)::class.java)
-            logger.error("Error occured while attempting to perform retryable operation. Retrying...", ex)
-
+            logger.error("Error occured performing retryable operation during attempt $i.", ex)
             retryStrategy.backoff()
         }
     }
