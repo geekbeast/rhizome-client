@@ -24,6 +24,7 @@ package com.geekbeast.util
 import org.apache.commons.lang3.RandomUtils
 import org.slf4j.LoggerFactory
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
@@ -38,7 +39,7 @@ class RetryableCallFailedException : RuntimeException {
     constructor(message: String) : super(message)
 }
 
-open class RetryStrategy(val strategy: (Long) -> Long, private var currentDelayMillis: Long = 10L) {
+open class RetryStrategy(val strategy: (Long) -> Long, private var currentDelayMillis: Long = 1000L) {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     fun backoff() {
@@ -69,7 +70,7 @@ open class ExponentialBackoff @JvmOverloads constructor(
         maxRatio: Double = 2.5
 ) : RetryStrategy(
         { currentInterval ->
-            max(maxInterval, (RandomUtils.nextDouble(minRatio, maxRatio) * currentInterval).toLong())
+            min(maxInterval, (RandomUtils.nextDouble(minRatio, maxRatio) * currentInterval).toLong())
         }
 )
 
