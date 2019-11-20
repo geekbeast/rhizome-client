@@ -23,17 +23,23 @@ package com.geekbeast.util
 
 import com.google.common.base.Stopwatch
 import org.slf4j.LoggerFactory
+import org.slf4j.event.Level
 import java.util.concurrent.TimeUnit
 
 
-
-class StopWatch(val log : String) : AutoCloseable {
+class StopWatch(val log : String, val level: Level = Level.INFO) : AutoCloseable {
     companion object {
         private val logger = LoggerFactory.getLogger(StopWatch::class.java)
     }
     override fun close() {
-        logger.info("$log took ${sw.elapsed(TimeUnit.MILLISECONDS)} ms.")
+        when(level) {
+            Level.INFO -> logger.info("$log took ${getDuration()} ms.")
+        }
         sw.stop()
+    }
+
+    fun getDuration(): Long {
+        return sw.elapsed(TimeUnit.MILLISECONDS)
     }
 
     private val sw = Stopwatch.createStarted()
