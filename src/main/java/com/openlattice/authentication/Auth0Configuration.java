@@ -23,12 +23,10 @@ package com.openlattice.authentication;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.LoadingCache;
 import com.kryptnostic.rhizome.configuration.annotation.ReloadableConfiguration;
 import java.io.Serializable;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**

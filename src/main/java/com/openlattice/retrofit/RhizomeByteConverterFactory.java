@@ -22,7 +22,7 @@ public class RhizomeByteConverterFactory extends Converter.Factory {
             Annotation[] annotations,
             Retrofit retrofit ) {
         if ( isByteArray( type ) ) {
-            return responseBody -> responseBody.bytes();
+            return ResponseBody::bytes;
         }
         return null;
     }
