@@ -62,7 +62,7 @@ public class AwsLaunchConfiguration implements AmazonLaunchConfiguration {
 
     @Override
     @JsonProperty( REGION_FIELD )
-    public java.util.Optional<Regions> getRegion() {
+    public Optional<Regions> getRegion() {
         return region;
     }
 
