@@ -23,18 +23,19 @@ package com.kryptnostic.rhizome.configuration.amazon;
 import com.amazonaws.regions.Regions;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Optional;
+
 public class AwsLaunchConfiguration implements AmazonLaunchConfiguration {
-    public static final  String BUCKET_FIELD   = "bucket";
-    public static final  String FOLDER_FIELD   = "folder";
-    public static final  String REGION_FIELD   = "region";
-    private static final String DEFAULT_FOLDER = "";
-    private final String            bucket;
-    private final String            folder;
-    private final Optional<Regions> region;
+    public static final  String                      BUCKET_FIELD   = "bucket";
+    public static final  String                      FOLDER_FIELD   = "folder";
+    public static final  String                      REGION_FIELD   = "region";
+    private static final String                      DEFAULT_FOLDER = "";
+    private final        String                      bucket;
+    private final        String                      folder;
+    private final        Optional<Regions> region;
 
     @JsonCreator
     public AwsLaunchConfiguration(
@@ -44,7 +45,7 @@ public class AwsLaunchConfiguration implements AmazonLaunchConfiguration {
         Preconditions.checkArgument( StringUtils.isNotBlank( bucket ),
                 "S3 bucket for configuration must be specified." );
         this.bucket = bucket;
-        String rawFolder = folder.or( DEFAULT_FOLDER );
+        String rawFolder = folder.orElse( DEFAULT_FOLDER );
 
         while ( StringUtils.endsWith( rawFolder, "/" ) ) {
             StringUtils.removeEnd( rawFolder, "/" );
@@ -56,7 +57,7 @@ public class AwsLaunchConfiguration implements AmazonLaunchConfiguration {
             this.folder = rawFolder;
         }
 
-        this.region = region.isPresent() ? Optional.of( Regions.fromName( region.get() ) ) : Optional.absent();
+        this.region = region.map( Regions::fromName );
     }
 
     @Override

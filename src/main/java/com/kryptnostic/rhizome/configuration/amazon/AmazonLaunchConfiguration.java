@@ -23,7 +23,8 @@ package com.kryptnostic.rhizome.configuration.amazon;
 
 import com.amazonaws.regions.Regions;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
 
 /**
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
