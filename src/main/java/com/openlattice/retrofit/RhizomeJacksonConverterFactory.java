@@ -1,9 +1,7 @@
 package com.openlattice.retrofit;
 
 import com.dataloom.mappers.ObjectMappers;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -14,9 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.guava.GuavaModule;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.google.common.base.Charsets;
 
 import okhttp3.MediaType;

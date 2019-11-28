@@ -1,9 +1,6 @@
 package com.openlattice;
 
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.dataloom.mappers.ObjectMappers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
