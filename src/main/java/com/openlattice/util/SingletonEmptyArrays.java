@@ -2,7 +2,7 @@ package com.openlattice.util;
 
 import java.util.UUID;
 
-public class SingletonArrays {
+public class SingletonEmptyArrays {
     public static final int[]       EMPTY_INTS  = new int[0];
     public static final byte[]      EMPTY_BYTES = new byte[0];
     public static final long[]      EMPTY_LONGS = new long[0];
@@ -21,5 +21,5 @@ public class SingletonArrays {
     public static final Short[]     EMPTY_SHORT_OBJS = new Short[0];
     public static final Class<?>[]  EMPTY_CLASSES    = new Class<?>[0];
 
-    private SingletonArrays() { /* No-Op */ }
+    private SingletonEmptyArrays() { /* No-Op */ }
 }
