@@ -102,11 +102,8 @@ dependencies {
      */
     if (project.hasProperty('developmentMode') && project.developmentMode) {
         logger.quiet(project.name + " using project dependencies.")
-
-
     } else {
         logger.quiet(project.name + " using jar dependencies.")
-
     }
 
     /*
