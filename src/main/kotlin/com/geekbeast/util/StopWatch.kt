@@ -32,8 +32,14 @@ class StopWatch(val log : String, val level: Level = Level.INFO) : AutoCloseable
         private val logger = LoggerFactory.getLogger(StopWatch::class.java)
     }
     override fun close() {
+        val mesg = "$log took ${getDuration()} ms.")
         when(level) {
-            Level.INFO -> logger.info("$log took ${getDuration()} ms.")
+            Level.INFO -> logger.info(mesg)
+            Level.DEBUG -> logger.debug(mesg)
+            Level.WARN -> logger.warn(mesg)
+            Level.ERROR -> logger.error(mesg)
+            else -> logger.info(mesg)
+
         }
         sw.stop()
     }
