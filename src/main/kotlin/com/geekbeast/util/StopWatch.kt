@@ -33,7 +33,7 @@ class StopWatch(val log: String, val level: Level = Level.INFO) : AutoCloseable 
     }
 
     override fun close() {
-        val mesg = "$log took ${getDuration()} ms.")
+        val mesg = "$log took ${getDuration()} ms."
         when (level) {
             Level.INFO -> logger.info(mesg)
             Level.DEBUG -> logger.debug(mesg)
