@@ -27,19 +27,19 @@ import org.slf4j.event.Level
 import java.util.concurrent.TimeUnit
 
 
-class StopWatch(val log : String, val level: Level = Level.INFO) : AutoCloseable {
+class StopWatch(val log: String, val level: Level = Level.INFO) : AutoCloseable {
     companion object {
         private val logger = LoggerFactory.getLogger(StopWatch::class.java)
     }
+
     override fun close() {
         val mesg = "$log took ${getDuration()} ms.")
-        when(level) {
+        when (level) {
             Level.INFO -> logger.info(mesg)
             Level.DEBUG -> logger.debug(mesg)
             Level.WARN -> logger.warn(mesg)
             Level.ERROR -> logger.error(mesg)
             else -> logger.info(mesg)
-
         }
         sw.stop()
     }
