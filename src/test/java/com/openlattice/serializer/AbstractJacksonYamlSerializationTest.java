@@ -25,7 +25,10 @@ import com.dataloom.mappers.ObjectMappers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Consumer;
+
+import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -44,12 +47,11 @@ public abstract class AbstractJacksonYamlSerializationTest<T> extends AbstractJa
         T data = getSampleData();
         YamlSerializationResult<T> result = serialize( data );
         logResult( result );
-        Assert.assertEquals( data, result.deserializeJsonString( getClazz() ) );
-        Assert.assertEquals( data, result.deserializeJsonBytes( getClazz() ) );
-        Assert.assertEquals( data, result.deserializeSmileBytes( getClazz() ) );
-        Assert.assertEquals( data, result.deserializeYamlString( getClazz() ) );
+        Assert.assertTrue( compareElements( data, result.deserializeJsonString( getClazz() )));
+        Assert.assertTrue( compareElements( data, result.deserializeJsonBytes( getClazz() )));
+        Assert.assertTrue( compareElements( data, result.deserializeSmileBytes( getClazz() )));
+        Assert.assertTrue( compareElements( data, result.deserializeYamlString( getClazz() )));
     }
-
 
     @Override
     protected YamlSerializationResult<T> serialize( T data ) throws IOException {
@@ -62,6 +64,10 @@ public abstract class AbstractJacksonYamlSerializationTest<T> extends AbstractJa
     protected abstract T getSampleData() throws IOException;
 
     protected abstract Class<T> getClazz();
+
+    protected boolean compareElements( @NotNull T first, @NotNull  T second ) {
+        return Objects.equals( first, second );
+    }
 
     public static void registerModule( Consumer<ObjectMapper> c ) {
         AbstractJacksonSerializationTest.registerModule( c );
