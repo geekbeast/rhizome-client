@@ -21,11 +21,7 @@ class RunOnce private constructor(private val supplier: Supplier<Exception?>) {
     public constructor(delegate: () -> Unit) : this(makeSupplier(delegate))
 
     fun get() {
-        supplier.get().let {
-            if (it != null) {
-                throw RunOnceException(it)
-            }
-        }
+        supplier.get()?.let { throw RunOnceException(it) }
     }
 }
 
