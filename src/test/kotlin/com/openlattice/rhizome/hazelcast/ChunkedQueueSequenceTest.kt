@@ -12,14 +12,16 @@ class ChunkedQueueSequenceTest {
     @Test(timeout = 1000)
     fun testSimpleChunk() {
         val queue = LinkedBlockingQueue<Int>()
-        queue.addAll(0..100)
+        queue.addAll(0 until 100)
         val batch = ChunkedQueueSequence(queue, 100).iterator().next()
         Assert.assertEquals(100, batch.size)
+        Assert.assertEquals((0 until 100).toList(), batch)
     }
+
     @Test(timeout = 1000)
     fun testTwoChunks() {
         val queue = LinkedBlockingQueue<Int>()
-        queue.addAll(0..200)
+        queue.addAll(0 until 200)
         val iter = ChunkedQueueSequence(queue, 100).iterator()
         Assert.assertEquals(100, iter.next().size)
         Assert.assertEquals(100, iter.next().size)
@@ -28,30 +30,32 @@ class ChunkedQueueSequenceTest {
     @Test(timeout = 1000)
     fun testSmallBatch() {
         val queue = LinkedBlockingQueue<Int>()
-        queue.addAll(0..10)
-        val lists = ChunkedQueueSequence(queue, 1).take(10)
+        queue.addAll(0 until 10)
+        val lists = ChunkedQueueSequence(queue, 1).take(10).toList()
+        Assert.assertEquals((0 until 10).map { listOf(it) }.toList(), lists)
     }
-
 
     @Test(timeout = 1000)
     fun testAsyncProducer() {
         val queue = LinkedBlockingQueue<Int>()
         val pool = Executors.newCachedThreadPool()
+        val size = 1000
         try {
-            val cdl = CountDownLatch(1)
+            val sem = Semaphore(1)
             pool.execute(Runnable {
-                queue.add(1)
-                cdl.await(100, TimeUnit.MILLISECONDS)
-                queue.add(2)
+                for (i in 0 until size) {
+                    sem.acquire()
+                    queue.add(i + 10)
+                }
             })
             val seq = ChunkedQueueSequence(queue, 10)
-            val l1 = seq.take(1).single()
-            cdl.countDown()
-            Assert.assertEquals(1, l1.size)
-            val l2 = seq.take(1).single()
-            Assert.assertEquals(1, l2.size)
+            for (i in 0 until size) {
+                val list = seq.take(1).single()
+                sem.release()
+                Assert.assertEquals(listOf(i + 10), list)
+            }
         } finally {
-            pool.shutdown()
+            pool.shutdownNow()
         }
     }
 }
