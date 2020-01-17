@@ -20,14 +20,19 @@
 
 package com.openlattice.authentication;
 
+import com.auth0.json.mgmt.users.User;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 import com.kryptnostic.rhizome.configuration.annotation.ReloadableConfiguration;
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Json serializable POJO for Auth0 configuration values.
@@ -38,17 +43,22 @@ import org.apache.commons.lang3.StringUtils;
 @ReloadableConfiguration(
         uri = "auth0.yaml" )
 public class Auth0Configuration implements Serializable {
-    private static final long   serialVersionUID         = 3802624515206194125L;
-    public static final  String DOMAIN_FIELD             = "domain";
-    public static final  String CLIENT_SECRET_FIELD      = "clientSecret";
-    public static final  String CLIENT_ID_FIELD          = "clientId";
-    public static final  String CONFIGURATIONS_FIELD     = "configurations";
-    public static final  String MANAGEMENT_API_URL_FIELD = "managementApiUrl";
+    private static final long   serialVersionUID = 3802624515206194125L;
+    private static final Logger logger           = LoggerFactory.getLogger( Auth0Configuration.class );
+
+    public static final String CLIENT_ID_FIELD          = "clientId";
+    public static final String CLIENT_SECRET_FIELD      = "clientSecret";
+    public static final String CONFIGURATIONS_FIELD     = "configurations";
+    public static final String DOMAIN_FIELD             = "domain";
+    public static final String MANAGEMENT_API_URL_FIELD = "managementApiUrl";
+    public static final String NO_SYNC_URL              = "localhost";
+    public static final String USERS_FIELD              = "users";
 
     private final String                                domain;
     private final String                                clientId;
     private final String                                clientSecret;
     private final Set<Auth0AuthenticationConfiguration> configurations;
+    private final Set<User>                             users;
     private final String                                managementApiUrl;
 
     @JsonCreator
@@ -57,6 +67,7 @@ public class Auth0Configuration implements Serializable {
             @JsonProperty( CLIENT_ID_FIELD ) String clientId,
             @JsonProperty( CLIENT_SECRET_FIELD ) String clientSecret,
             @JsonProperty( CONFIGURATIONS_FIELD ) Set<Auth0AuthenticationConfiguration> configurations,
+            @JsonProperty( USERS_FIELD ) Optional<Set<User>> users,
             @JsonProperty( MANAGEMENT_API_URL_FIELD ) String managementApiUrl ) {
         Preconditions.checkArgument( StringUtils.isNotBlank( domain ), "Domain cannot be blank" );
         Preconditions.checkArgument( StringUtils.isNotBlank( clientId ), "Client ID cannot be blank" );
@@ -67,6 +78,11 @@ public class Auth0Configuration implements Serializable {
         this.clientSecret = clientSecret;
         this.configurations = configurations;
         this.managementApiUrl = managementApiUrl;
+        this.users = users.orElse( ImmutableSet.of() );
+
+        if( users.isPresent() &&  managementApiUrl.contains( "localhost" )) {
+            logger.warn("Users were provided, but ignored because managementApi contains ");
+        }
     }
 
     @JsonProperty( DOMAIN_FIELD )
@@ -92,5 +108,10 @@ public class Auth0Configuration implements Serializable {
     @JsonProperty( MANAGEMENT_API_URL_FIELD )
     public String getManagementApiUrl() {
         return managementApiUrl;
+    }
+
+    @JsonProperty( USERS_FIELD )
+    public Set<User> getUsers() {
+        return users;
     }
 }
