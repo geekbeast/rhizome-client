@@ -97,6 +97,10 @@ dependencies {
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:${jackson_version}"
     compile "org.yaml:snakeyaml:${snakeyaml_version}"
 
+    compile "com.auth0:java-jwt:${auth0_java_jwt_version}"
+    compile "com.auth0:jwks-rsa:${auth0_jwks_rsa_version}"
+    compile "com.auth0:auth0:${project.auth0_version}"
+
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     /*
      * Kryptnostic dependencies
