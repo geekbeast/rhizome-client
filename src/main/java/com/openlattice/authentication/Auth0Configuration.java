@@ -81,7 +81,7 @@ public class Auth0Configuration implements Serializable {
         this.users = users.orElse( ImmutableSet.of() );
 
         if( users.isPresent() &&  managementApiUrl.contains( "localhost" )) {
-            logger.warn("Users were provided, but ignored because managementApi contains ");
+            logger.warn("Users were provided, but ignored because managementApi contains localhost");
         }
     }
 
