@@ -61,6 +61,10 @@ public abstract class AbstractJacksonYamlSerializationTest<T> extends AbstractJa
                 yaml.writeValueAsString( data ));
     }
 
+    protected void logResult( YamlSerializationResult<T> result ) {
+       super.logResult( result );
+    }
+
     protected abstract T getSampleData() throws IOException;
 
     protected abstract Class<T> getClazz();
@@ -84,6 +88,10 @@ public abstract class AbstractJacksonYamlSerializationTest<T> extends AbstractJa
 
         protected T deserializeYamlString( Class<T> clazz ) throws IOException {
             return yaml.readValue( yamlString, clazz );
+        }
+
+        public String getYamlString() {
+            return yamlString;
         }
     }
 }
