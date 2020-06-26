@@ -26,6 +26,7 @@ public class RhizomeCallAdapterFactory extends CallAdapter.Factory {
 
             @Override
             public @Nullable Object adapt( Call call ) {
+
                 try {
                     Response response = call.execute();
                     final var code = response.code();
