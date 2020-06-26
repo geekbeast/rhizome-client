@@ -1,9 +1,6 @@
 package com.openlattice;
 
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.dataloom.mappers.ObjectMappers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
@@ -14,9 +11,11 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 
 /**
  * Created by mtamayo on 7/3/17.
@@ -71,6 +70,18 @@ public class ResourceConfigurationLoader {
         } else {
             return null;
         }
+    }
+
+    public static <T> T loadConfigurationFromFile( String path, Class<T> clazz ) {
+        T s = null;
+        try {
+            Path p = Path.of(path, getReloadableConfigurationUri( clazz ));
+            File f = p.toFile();
+            s = mapper.readValue( f, clazz );
+        } catch ( IOException e ) {
+            logger.error( "Failed to load configuration from {} for {}: {}", path, clazz, e );
+        }
+        return s;
     }
 
     public static <T> T loadConfigurationFromResource( String uri, Class<T> clazz ) {

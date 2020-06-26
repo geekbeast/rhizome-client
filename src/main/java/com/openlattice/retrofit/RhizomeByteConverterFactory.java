@@ -3,9 +3,6 @@ package com.openlattice.retrofit;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -14,7 +11,6 @@ import retrofit2.Retrofit;
 
 public class RhizomeByteConverterFactory extends Converter.Factory {
     private static final String BYTE_MIME_TYPE = "application/octet-stream";
-    private static final Logger logger         = LoggerFactory.getLogger( RhizomeByteConverterFactory.class );
 
     @Override
     public Converter<ResponseBody, byte[]> responseBodyConverter(
@@ -22,7 +18,7 @@ public class RhizomeByteConverterFactory extends Converter.Factory {
             Annotation[] annotations,
             Retrofit retrofit ) {
         if ( isByteArray( type ) ) {
-            return responseBody -> responseBody.bytes();
+            return ResponseBody::bytes;
         }
         return null;
     }
@@ -40,6 +36,6 @@ public class RhizomeByteConverterFactory extends Converter.Factory {
     }
 
     public static boolean isByteArray( Type type ) {
-        return ( (Type) ( byte[].class ) ).equals( type );
+        return ( ( byte[].class ) ).equals( type );
     }
 }

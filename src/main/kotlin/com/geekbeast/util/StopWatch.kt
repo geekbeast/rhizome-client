@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018. OpenLattice, Inc.
+ * Copyright (C) 2019. OpenLattice, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,20 +19,29 @@
  *
  */
 
-package com.kryptnostic.rhizome.configuration.amazon;
+package com.geekbeast.util
 
-import com.amazonaws.regions.Regions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Stopwatch
+import org.slf4j.LoggerFactory
+import org.slf4j.event.Level
+import java.util.concurrent.TimeUnit
 
-import java.util.Optional;
 
-/**
- * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
- */
-public interface AmazonLaunchConfiguration {
-    @JsonProperty( AwsLaunchConfiguration.BUCKET_FIELD ) Optional<Regions> getRegion();
+class StopWatch(val log: String, val level: Level = Level.INFO) : AutoCloseable {
+    companion object {
+        private val logger = LoggerFactory.getLogger(StopWatch::class.java)
+    }
 
-    String getBucket();
+    override fun close() {
+        val mesg = "$log took ${getDuration()} ms."
+        log(logger, level) { mesg }
+        sw.stop()
+    }
 
-    String getFolder();
+    fun getDuration(): Long {
+        return sw.elapsed(TimeUnit.MILLISECONDS)
+    }
+
+    private val sw = Stopwatch.createStarted()
+
 }
