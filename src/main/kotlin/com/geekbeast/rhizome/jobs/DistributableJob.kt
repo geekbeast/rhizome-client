@@ -8,4 +8,6 @@ import java.util.concurrent.Callable
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
-interface DistributableJob<R> : Callable<R?>
+interface DistributableJob<R> : Callable<R?> {
+    val resumable: Boolean
+}
