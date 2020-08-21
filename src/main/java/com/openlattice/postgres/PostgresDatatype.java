@@ -21,7 +21,9 @@
 package com.openlattice.postgres;
 
 //@formatter:off
-import java.util.EnumSet; /**
+import java.util.EnumSet;
+
+/*
  * From https://www.postgresql.org/docs/9.5/static/datatype.html
  * <table summary ="Postgres datatypes from docs">
  *     <tr>
@@ -50,6 +52,7 @@ import java.util.EnumSet; /**
  *
  *
  */
+
 //@formatter:on
 public enum PostgresDatatype {
     SMALLINT,
