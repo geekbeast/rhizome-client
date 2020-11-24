@@ -21,15 +21,9 @@
 package com.openlattice.rhizome.hazelcast;
 
 import com.google.common.base.Preconditions;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Spliterator;
-import java.util.UUID;
+
+import java.io.Serializable;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
@@ -37,9 +31,13 @@ import java.util.stream.Stream;
 
 /**
  * Immutable delegated uuid list
+ *
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
-public class DelegatedUUIDList implements List<UUID> {
+public class DelegatedUUIDList implements List<UUID>, Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private final List<UUID> uuids;
 
     public DelegatedUUIDList( List<UUID> uuids ) {
