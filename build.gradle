@@ -10,28 +10,38 @@ plugins {
     id 'idea'
     id 'jacoco'
     id 'signing'
+    id 'checkstyle'
     id 'maven-publish'
-    id 'com.github.spotbugs' version '4.5.1'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.50'
-id 'org.jetbrains.kotlin.plugin.spring' version '1.3.50'
+    id 'com.github.spotbugs' version '4.6.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.3.72'
 }
 
+description = "Rhizome client libraries"
+group = "com.openlattice"
+
 /*
- * This block must remain above the apply block as it controls publishing" 
+ * This block must remain above the apply block as it controls publishing"
  */
 ext.projectName = "rhizome-client"
 ext.scmUrl = 'scm:git:https://github.com/geekbeast/rhizome-client.git'
 ext.connectionUrl = 'scm:git:https://github.com/geekbeast/rhizome-client.git'
 ext.developerConnectionUrl = 'scm:git:https://github.com/geekbeast/rhizome-client.git'
 
-apply from: "https://raw.githubusercontent.com/openlattice/gradles/master/openlattice.gradle"
+apply from: "https://raw.githubusercontent.com/openlattice/openlattice/develop/gradles/openlattice.gradle"
 
-description = "Rhizome client libraries"
-group = "com.openlattice"
+checkstyle {
+    toolVersion = '7.4'
+    showViolations = false
+    config project.resources.text.fromUri('https://raw.githubusercontent.com/openlattice/openlattice/develop/gradles/checkstyle.xml')
+}
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
-
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
 
 spotbugs {
     reportLevel = 'high'
@@ -43,6 +53,10 @@ spotbugsMain {
         xml.enabled = false
         html.enabled = true
     }
+}
+
+test {
+    ignoreFailures = true
 }
 
 jacoco {
@@ -102,20 +116,12 @@ dependencies {
     compile "com.auth0:auth0:${project.auth0_version}"
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    /*
-     * Kryptnostic dependencies
-     */
-    if (project.hasProperty('developmentMode') && project.developmentMode) {
-        logger.quiet(project.name + " using project dependencies.")
-    } else {
-        logger.quiet(project.name + " using jar dependencies.")
-    }
 
     /*
      * TESTING
      */
-    testCompile "junit:junit:${junit_version}"
-    testCompile("org.mockito:mockito-all:${mockito_version}") {
+    testImplementation "junit:junit:${junit_version}"
+    testImplementation("org.mockito:mockito-all:${mockito_version}") {
         exclude module: 'hamcrest'
         exclude module: 'hamcrest-core'
     }
@@ -136,6 +142,7 @@ compileKotlin {
         jvmTarget = "1.8"
     }
 }
+
 compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
