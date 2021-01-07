@@ -74,7 +74,9 @@ public enum PostgresDatatype {
     UUID, UUID_ARRAY, UUID_ARRAY_ARRAY,
     TEXT, TEXT_ARRAY,
     JSON,
-    JSONB;
+    JSONB,
+    REAL,
+    USER_DEFINED;
 
     private static final EnumSet<PostgresDatatype> ARRAY_TYPES = EnumSet
             .of( BYTEA_ARRAY,
@@ -123,6 +125,8 @@ public enum PostgresDatatype {
                 return TIMESTAMPTZ;
             case "TIMESTAMP WITHOUT TIME ZONE":
                 return TIMESTAMP;
+            case "USER-DEFINED":
+                return USER_DEFINED;
             default:
                 return PostgresDatatype.valueOf(dataTypeInput.replace("[]", "_ARRAY") );
         }
