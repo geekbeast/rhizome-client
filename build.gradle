@@ -30,6 +30,12 @@ ext.developerConnectionUrl = 'scm:git:https://github.com/geekbeast/rhizome-clien
 
 apply from: "https://raw.githubusercontent.com/openlattice/openlattice/develop/gradles/openlattice.gradle"
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
 checkstyle {
     toolVersion = '7.4'
     showViolations = false
@@ -134,7 +140,6 @@ install {
 eclipse {
     ext.downloadSources = true
     ext.downloadJavadoc = true
-    ext.sourceCompatibility = JavaVersion.VERSION_11
 }
 
 compileKotlin {
