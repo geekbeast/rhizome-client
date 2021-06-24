@@ -96,10 +96,10 @@ dependencies {
     api "commons-io:commons-io:${commonsio_version}"
 
     api "com.google.guava:guava:${guava_version}"
-    implementation "org.apache.olingo:odata-commons-api:${odata_version}"
-    implementation "org.apache.olingo:odata-commons-core:${odata_version}"
-    implementation "org.apache.olingo:odata-server-api:${odata_version}"
-    implementation "org.apache.olingo:odata-server-core:${odata_version}"
+    api "org.apache.olingo:odata-commons-api:${odata_version}"
+    api "org.apache.olingo:odata-commons-core:${odata_version}"
+    api "org.apache.olingo:odata-server-api:${odata_version}"
+    api "org.apache.olingo:odata-server-core:${odata_version}"
 
     api "com.squareup.retrofit2:retrofit:${retrofit2_version}"
 
