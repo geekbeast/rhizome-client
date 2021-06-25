@@ -1,5 +1,6 @@
 package com.openlattice.rhizome.hazelcast
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import java.lang.IllegalArgumentException
 import java.util.concurrent.BlockingQueue
 
@@ -17,6 +18,10 @@ import java.util.concurrent.BlockingQueue
  *
  * @see BlockingQueue for more discussion of general purpose producer consumer queues.
  */
+@SuppressFBWarnings(
+    "NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE",
+    justification = "Known spotbugs issue: https://github.com/spotbugs/spotbugs/issues/552"
+)
 class ChunkedQueueSequence<T>(private val queue: BlockingQueue<T>, private val chunkSize: Int) : Sequence<List<T>> {
     init {
         if (chunkSize < 1) {
@@ -25,7 +30,7 @@ class ChunkedQueueSequence<T>(private val queue: BlockingQueue<T>, private val c
     }
 
     override fun iterator(): Iterator<List<T>> {
-        return iterator() {
+        return iterator {
             while (true) {
                 val out = ArrayList<T>(chunkSize)
                 out.add(queue.take())
