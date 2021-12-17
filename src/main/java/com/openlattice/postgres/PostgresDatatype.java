@@ -76,7 +76,9 @@ public enum PostgresDatatype {
     JSON,
     JSONB,
     REAL,
-    USER_DEFINED;
+    USER_DEFINED,
+    VARCHAR_MAX,
+    TEXT_UUID;
 
     private static final EnumSet<PostgresDatatype> ARRAY_TYPES = EnumSet
             .of( BYTEA_ARRAY,
@@ -100,6 +102,10 @@ public enum PostgresDatatype {
                 return "TIME WITHOUT TIME ZONE";
             case TIMETZ:
                 return "TIME WITH TIME ZONE";
+            case VARCHAR_MAX:
+                return "varchar(max)"; //For redshift support
+            case TEXT_UUID:
+                return "varchar(36)";
             case DOUBLE:
                 return "DOUBLE PRECISION";
             case DOUBLE_ARRAY:
