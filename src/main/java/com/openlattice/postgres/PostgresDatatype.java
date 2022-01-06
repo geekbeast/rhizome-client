@@ -75,6 +75,7 @@ public enum PostgresDatatype {
     TEXT, TEXT_ARRAY,
     JSON,
     JSONB,
+    POINT,
     REAL,
     USER_DEFINED,
     VARCHAR_MAX,
