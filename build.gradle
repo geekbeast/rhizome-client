@@ -126,8 +126,6 @@ dependencies {
     api "com.auth0:jwks-rsa:${auth0_jwks_rsa_version}"
     api "com.auth0:auth0:${project.auth0_version}"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-
     /*
      * TESTING
      */
