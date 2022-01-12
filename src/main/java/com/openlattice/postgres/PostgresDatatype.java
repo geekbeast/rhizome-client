@@ -21,7 +21,9 @@
 package com.openlattice.postgres;
 
 //@formatter:off
-import java.util.EnumSet; /**
+import java.util.EnumSet;
+
+/*
  * From https://www.postgresql.org/docs/9.5/static/datatype.html
  * <table summary ="Postgres datatypes from docs">
  *     <tr>
@@ -50,6 +52,7 @@ import java.util.EnumSet; /**
  *
  *
  */
+
 //@formatter:on
 public enum PostgresDatatype {
     SMALLINT,
@@ -70,7 +73,13 @@ public enum PostgresDatatype {
     TIMESTAMPTZ, TIMESTAMPTZ_ARRAY,
     UUID, UUID_ARRAY, UUID_ARRAY_ARRAY,
     TEXT, TEXT_ARRAY,
-    JSONB;
+    JSON,
+    JSONB,
+    POINT,
+    REAL,
+    USER_DEFINED,
+    VARCHAR_MAX,
+    TEXT_UUID;
 
     private static final EnumSet<PostgresDatatype> ARRAY_TYPES = EnumSet
             .of( BYTEA_ARRAY,
@@ -94,6 +103,10 @@ public enum PostgresDatatype {
                 return "TIME WITHOUT TIME ZONE";
             case TIMETZ:
                 return "TIME WITH TIME ZONE";
+            case VARCHAR_MAX:
+                return "varchar(max)"; //For redshift support
+            case TEXT_UUID:
+                return "varchar(36)";
             case DOUBLE:
                 return "DOUBLE PRECISION";
             case DOUBLE_ARRAY:
@@ -119,6 +132,8 @@ public enum PostgresDatatype {
                 return TIMESTAMPTZ;
             case "TIMESTAMP WITHOUT TIME ZONE":
                 return TIMESTAMP;
+            case "USER-DEFINED":
+                return USER_DEFINED;
             default:
                 return PostgresDatatype.valueOf(dataTypeInput.replace("[]", "_ARRAY") );
         }

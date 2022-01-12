@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
@@ -44,7 +45,7 @@ public class ResourceConfigurationLoader {
         String yamlString = null;
         try {
             try {
-                yamlString = IOUtils.toString( s3.getObject( bucket, folder + key ).getObjectContent() );
+                yamlString = IOUtils.toString( s3.getObject( bucket, folder + key ).getObjectContent(), Charset.defaultCharset() );
             } catch ( IOException | IllegalArgumentException e ) {
                 logger.debug( "Failed to load resource from " + key, e );
             }
