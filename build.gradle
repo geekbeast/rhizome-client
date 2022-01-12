@@ -13,8 +13,8 @@ plugins {
     id 'checkstyle'
     id 'maven-publish'
     id 'com.github.spotbugs' version '4.6.0'
-    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.5.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.6.10'
 }
 
 description = "Rhizome client libraries"
@@ -30,11 +30,16 @@ ext.developerConnectionUrl = 'scm:git:https://github.com/geekbeast/rhizome-clien
 
 apply from: "https://raw.githubusercontent.com/openlattice/openlattice/main/gradles/openlattice.gradle"
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
-    }
-}
+/**
+ * The reason we use source and target compatability instead of toolchain is that toolchain forces use of the --release
+ * flag. This flag prevents exports of some commonly used internal java apis in order to enforce compliance with public
+ * api surface of that particular release.  The source and target compatibility settings without the --release flag
+ * instruct the compiler to generate compatible byte code with that version at the risk of allowing the use of
+ * potentially unsupported APIs on earlier versions. (i.e compiler 17, target/source 11, will create bytecode that
+ * references an 17 API that isn't available on jdk 11).
+ */
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 
 checkstyle {
     toolVersion = '7.4'
@@ -138,14 +143,9 @@ eclipse {
     ext.downloadJavadoc = true
 }
 
-compileKotlin {
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
+        freeCompilerArgs += '-Xjvm-default=compatibility'
     }
 }
