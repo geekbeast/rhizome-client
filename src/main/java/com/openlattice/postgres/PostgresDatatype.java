@@ -79,7 +79,9 @@ public enum PostgresDatatype {
     REAL,
     USER_DEFINED,
     VARCHAR_MAX,
-    TEXT_UUID;
+    TEXT_UUID,
+    TEXT_128,
+    TEXT_256;
 
     private static final EnumSet<PostgresDatatype> ARRAY_TYPES = EnumSet
             .of( BYTEA_ARRAY,
@@ -106,7 +108,11 @@ public enum PostgresDatatype {
             case VARCHAR_MAX:
                 return "varchar(max)"; //For redshift support
             case TEXT_UUID:
-                return "varchar(36)";
+                return "varchar(36)"; //For redshift support
+            case TEXT_128:
+                return "varchar(128)"; //For redshift support
+            case TEXT_256:
+                return "varchar(256)"; //For redshift support
             case DOUBLE:
                 return "DOUBLE PRECISION";
             case DOUBLE_ARRAY:
@@ -116,7 +122,7 @@ public enum PostgresDatatype {
         }
     }
 
-    public static PostgresDatatype getEnum(String dataTypeInput ) {
+    public static PostgresDatatype getEnum( String dataTypeInput ) {
         switch ( dataTypeInput ) {
             case "CHARACTER VARYING":
                 return TEXT;
@@ -135,7 +141,7 @@ public enum PostgresDatatype {
             case "USER-DEFINED":
                 return USER_DEFINED;
             default:
-                return PostgresDatatype.valueOf(dataTypeInput.replace("[]", "_ARRAY") );
+                return PostgresDatatype.valueOf( dataTypeInput.replace( "[]", "_ARRAY" ) );
         }
 
     }
