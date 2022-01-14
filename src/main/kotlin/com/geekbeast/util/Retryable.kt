@@ -37,6 +37,7 @@ class Retryable {
 
 class RetryableCallFailedException : RuntimeException {
     constructor(message: String) : super(message)
+    constructor(message: String, cause: Throwable) : super(message, cause)
 }
 
 open class RetryStrategy(val strategy: (Long) -> Long, private var currentDelayMillis: Long = 1000L) {
