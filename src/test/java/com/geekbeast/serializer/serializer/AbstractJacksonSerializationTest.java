@@ -1,7 +1,9 @@
 package com.geekbeast.serializer.serializer;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.geekbeast.mappers.mappers.ObjectMappers;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.annotation.Nullable;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -27,9 +29,16 @@ public abstract class AbstractJacksonSerializationTest<T> {
 
         SerializationResult<T> result = serialize( data );
         logResult( result );
-        Assert.assertEquals( data, result.deserializeJsonString( getClazz() ) );
-        Assert.assertEquals( data, result.deserializeJsonBytes( getClazz() ) );
-        Assert.assertEquals( data, result.deserializeSmileBytes( getClazz() ) );
+
+        if ( getClazz() != null ) {
+            Assert.assertEquals( data, result.deserializeJsonString( getClazz() ) );
+            Assert.assertEquals( data, result.deserializeJsonBytes( getClazz() ) );
+            Assert.assertEquals( data, result.deserializeSmileBytes( getClazz() ) );
+        } else if ( getTypeReference() != null ) {
+            Assert.assertEquals( data, result.deserializeJsonString( getTypeReference() ) );
+            Assert.assertEquals( data, result.deserializeJsonBytes( getTypeReference() ) );
+            Assert.assertEquals( data, result.deserializeSmileBytes( getTypeReference() ) );
+        }
     }
 
     protected SerializationResult<T> serialize( T data ) throws IOException {
@@ -43,7 +52,12 @@ public abstract class AbstractJacksonSerializationTest<T> {
 
     protected abstract T getSampleData() throws IOException;
 
-    protected abstract Class<T> getClazz();
+
+    protected abstract @Nullable Class<T> getClazz();
+
+    protected @Nullable TypeReference<T> getTypeReference() {
+        return null;
+    }
 
     public static void registerModule( Consumer<ObjectMapper> c ) {
         c.accept( mapper );
@@ -71,6 +85,18 @@ public abstract class AbstractJacksonSerializationTest<T> {
 
         protected T deserializeSmileBytes( Class<T> clazz ) throws IOException {
             return smile.readValue( smileBytes, clazz );
+        }
+
+        protected T deserializeJsonString( TypeReference<T> typeRef ) throws IOException {
+            return mapper.readValue( jsonString, typeRef );
+        }
+
+        protected T deserializeJsonBytes( TypeReference<T> typeRef ) throws IOException {
+            return mapper.readValue( jsonBytes, typeRef );
+        }
+
+        protected T deserializeSmileBytes( TypeReference<T> typeRef ) throws IOException {
+            return smile.readValue( smileBytes, typeRef );
         }
 
         public String getJsonString() {
