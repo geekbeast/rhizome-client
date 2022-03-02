@@ -42,7 +42,7 @@ class StopWatch(
     override fun close() {
         val duration = getDuration()
         val mesg = "$log took $duration ms."
-        log(logger, level, _args) { mesg }
+        log(logger, level, *_args) { mesg }
         sw.stop()
     }
 
