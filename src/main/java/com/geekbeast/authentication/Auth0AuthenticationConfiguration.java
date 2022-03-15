@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 
@@ -52,7 +53,9 @@ public class Auth0AuthenticationConfiguration implements Serializable {
             @JsonProperty( SIGNING_ALGORITHM_FIELD ) String signingAlgorithm ) {
         Preconditions.checkArgument( StringUtils.isNotBlank( issuer ) );
         Preconditions.checkArgument( StringUtils.isNotBlank( audience ) );
-        Preconditions.checkArgument( StringUtils.isNotBlank( secret ) );
+        if( signingAlgorithm.startsWith( "HS" ) ) {
+            Preconditions.checkArgument( StringUtils.isNotBlank( secret ) );
+        }
         this.issuer = issuer;
         this.audience = audience;
         this.secret = secret;
@@ -86,23 +89,16 @@ public class Auth0AuthenticationConfiguration implements Serializable {
     }
 
     @Override public boolean equals( Object o ) {
-        if ( this == o ) { return true; }
-        if ( !( o instanceof Auth0AuthenticationConfiguration ) ) { return false; }
-
+        if ( this == o ) {return true;}
+        if ( !( o instanceof Auth0AuthenticationConfiguration ) ) {return false;}
         Auth0AuthenticationConfiguration that = (Auth0AuthenticationConfiguration) o;
-
-        if ( base64EncodedSecret != that.base64EncodedSecret ) { return false; }
-        if ( !issuer.equals( that.issuer ) ) { return false; }
-        if ( !audience.equals( that.audience ) ) { return false; }
-        return secret.equals( that.secret );
+        return base64EncodedSecret == that.base64EncodedSecret && issuer.equals( that.issuer )
+                && audience.equals( that.audience ) && Objects.equals( secret, that.secret )
+                && signingAlgorithm.equals( that.signingAlgorithm );
     }
 
     @Override public int hashCode() {
-        int result = issuer.hashCode();
-        result = 31 * result + audience.hashCode();
-        result = 31 * result + secret.hashCode();
-        result = 31 * result + ( base64EncodedSecret ? 1 : 0 );
-        return result;
+        return Objects.hash( issuer, audience, secret, base64EncodedSecret, signingAlgorithm );
     }
 
     @Override public String toString() {
