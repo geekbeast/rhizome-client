@@ -68,11 +68,13 @@ inline fun <T, R> T.attempt(retryStrategy: RetryStrategy, maxAttempts: Int, bloc
 open class ExponentialBackoff @JvmOverloads constructor(
         private val maxInterval: Long,
         minRatio: Double = 1.5,
-        maxRatio: Double = 2.5
+        maxRatio: Double = 2.5,
+        initialDelayMillis: Long = 1000L
 ) : RetryStrategy(
         { currentInterval ->
             min(maxInterval, (RandomUtils.nextDouble(minRatio, maxRatio) * currentInterval).toLong())
-        }
+        },
+        initialDelayMillis
 )
 
 open class QuadraticBackoff(
