@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.blackbird.BlackbirdModule;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -13,7 +14,6 @@ import com.fasterxml.jackson.dataformat.smile.SmileFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.google.common.collect.Maps;
 
 public final class ObjectMappers {
@@ -40,7 +40,7 @@ public final class ObjectMappers {
         yamlMapper.registerModule( new Jdk8Module() );
         yamlMapper.registerModule( new GuavaModule() );
         yamlMapper.registerModule( new JavaTimeModule() );
-        yamlMapper.registerModule( new AfterburnerModule() );
+        yamlMapper.registerModule( new BlackbirdModule() );
         yamlMapper.registerModule( new JodaModule() );
         yamlMapper.registerModule( new KotlinModule() );
         yamlMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
@@ -53,7 +53,7 @@ public final class ObjectMappers {
         smileMapper.registerModule( new Jdk8Module() );
         smileMapper.registerModule( new GuavaModule() );
         smileMapper.registerModule( new JavaTimeModule() );
-        smileMapper.registerModule( new AfterburnerModule() );
+        smileMapper.registerModule( new BlackbirdModule() );
         smileMapper.registerModule( new JodaModule() );
         smileMapper.registerModule( new KotlinModule() );
         smileMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
@@ -67,7 +67,7 @@ public final class ObjectMappers {
         mapper.registerModule( new JavaTimeModule() );
         mapper.registerModule( new GuavaModule() );
         mapper.registerModule( new JodaModule() );
-        mapper.registerModule( new AfterburnerModule() );
+        mapper.registerModule( new BlackbirdModule() );
         mapper.registerModule( new KotlinModule() );
         mapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
         mapper.disable( DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE );
