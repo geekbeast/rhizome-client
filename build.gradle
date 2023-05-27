@@ -91,7 +91,7 @@ test {
 }
 
 jacoco {
-    toolVersion = "0.8.2"
+    toolVersion = "${jacoco_tool_version}"
 }
 
 dependencies {
