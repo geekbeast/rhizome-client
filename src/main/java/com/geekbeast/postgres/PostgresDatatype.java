@@ -81,7 +81,8 @@ public enum PostgresDatatype {
     VARCHAR_MAX,
     TEXT_UUID,
     TEXT_128,
-    TEXT_256;
+    TEXT_256,
+    TEXT_512;
 
     private static final EnumSet<PostgresDatatype> ARRAY_TYPES = EnumSet
             .of( BYTEA_ARRAY,
@@ -113,6 +114,8 @@ public enum PostgresDatatype {
                 return "varchar(128)"; //For redshift support
             case TEXT_256:
                 return "varchar(256)"; //For redshift support
+            case TEXT_512:
+                return "varchar(512)"; //For redshift support
             case DOUBLE:
                 return "DOUBLE PRECISION";
             case DOUBLE_ARRAY:
