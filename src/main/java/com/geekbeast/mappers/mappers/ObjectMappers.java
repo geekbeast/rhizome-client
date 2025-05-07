@@ -42,7 +42,7 @@ public final class ObjectMappers {
         yamlMapper.registerModule( new JavaTimeModule() );
         yamlMapper.registerModule( new BlackbirdModule() );
         yamlMapper.registerModule( new JodaModule() );
-        yamlMapper.registerModule( new KotlinModule() );
+        yamlMapper.registerModule( new KotlinModule.Builder().build() );
         yamlMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
         yamlMapper.disable( DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE );
         return yamlMapper;
@@ -55,7 +55,7 @@ public final class ObjectMappers {
         smileMapper.registerModule( new JavaTimeModule() );
         smileMapper.registerModule( new BlackbirdModule() );
         smileMapper.registerModule( new JodaModule() );
-        smileMapper.registerModule( new KotlinModule() );
+        smileMapper.registerModule( new KotlinModule.Builder().build() );
         smileMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
         smileMapper.disable( DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE );
         return smileMapper;
@@ -68,7 +68,7 @@ public final class ObjectMappers {
         mapper.registerModule( new GuavaModule() );
         mapper.registerModule( new JodaModule() );
         mapper.registerModule( new BlackbirdModule() );
-        mapper.registerModule( new KotlinModule() );
+        mapper.registerModule( new KotlinModule.Builder().build() );
         mapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
         mapper.disable( DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE );
         return mapper;

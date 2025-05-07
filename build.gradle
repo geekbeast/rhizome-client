@@ -12,9 +12,9 @@ plugins {
     id 'signing'
     id 'checkstyle'
     id 'maven-publish'
-    id 'com.github.spotbugs' version '5.0.14'
-    id 'org.jetbrains.kotlin.jvm' version '1.8.20'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.8.20'
+    id 'com.github.spotbugs' version '6.1.10'
+    id 'org.jetbrains.kotlin.jvm' version '2.1.0'
+    id 'org.jetbrains.kotlin.plugin.spring' version '2.1.0'
 }
 
 description = "Rhizome client libraries"
@@ -164,6 +164,6 @@ eclipse {
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
         jvmTarget = "17"
-        freeCompilerArgs += '-Xjvm-default=compatibility'
+        freeCompilerArgs += '-Xjvm-default=all'
     }
 }
