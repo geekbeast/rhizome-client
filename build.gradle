@@ -13,8 +13,8 @@ plugins {
     id 'checkstyle'
     id 'maven-publish'
     id 'com.github.spotbugs' version '6.1.10'
-    id 'org.jetbrains.kotlin.jvm' version '2.1.0'
-    id 'org.jetbrains.kotlin.plugin.spring' version '2.1.0'
+    id 'org.jetbrains.kotlin.jvm' version '2.3.10'
+    id 'org.jetbrains.kotlin.plugin.spring' version '2.3.10'
 }
 
 description = "Rhizome client libraries"
