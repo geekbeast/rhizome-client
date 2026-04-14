@@ -21,8 +21,8 @@
 
 package com.geekbeast.rhizome.configuration.configuration.amazon;
 
-import com.amazonaws.regions.Regions;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import software.amazon.awssdk.regions.Region;
 
 import java.util.Optional;
 
@@ -30,7 +30,7 @@ import java.util.Optional;
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
 public interface AmazonLaunchConfiguration {
-    @JsonProperty( AwsLaunchConfiguration.BUCKET_FIELD ) Optional<Regions> getRegion();
+    @JsonProperty( AwsLaunchConfiguration.BUCKET_FIELD ) Optional<Region> getRegion();
 
     String getBucket();
 

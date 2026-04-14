@@ -114,8 +114,8 @@ dependencies {
     api "com.esotericsoftware:reflectasm:${reflectasm_version}"
     api "org.objenesis:objenesis:${objenesis_version}"
 
-    api group: 'com.amazonaws', name: 'aws-java-sdk-ec2', version: "$aws_java_sdk_version"
-    api "com.amazonaws:aws-java-sdk-s3:$aws_java_sdk_version"
+    api platform("software.amazon.awssdk:bom:2.20.56")
+    api 'software.amazon.awssdk:s3'
 
     api "org.apache.commons:commons-lang3:${commonsLang_version}"
     api "commons-io:commons-io:${commonsio_version}"

@@ -1,20 +1,19 @@
 package com.geekbeast;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.geekbeast.mappers.mappers.ObjectMappers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
 import com.geekbeast.rhizome.configuration.configuration.annotation.ReloadableConfiguration;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
@@ -36,7 +35,7 @@ public class ResourceConfigurationLoader {
     }
 
     public static <T> T loadConfigurationFromS3(
-            AmazonS3 s3,
+            S3Client s3,
             String bucket,
             String folder,
             Class<T> clazz ) {
@@ -45,8 +44,12 @@ public class ResourceConfigurationLoader {
         String yamlString = null;
         try {
             try {
-                yamlString = IOUtils.toString( s3.getObject( bucket, folder + key ).getObjectContent(), Charset.defaultCharset() );
-            } catch ( IOException | IllegalArgumentException e ) {
+                GetObjectRequest request = GetObjectRequest.builder()
+                        .bucket( bucket )
+                        .key( folder + key )
+                        .build();
+                yamlString = s3.getObjectAsBytes( request ).asUtf8String();
+            } catch ( RuntimeException e ) {
                 logger.debug( "Failed to load resource from " + key, e );
             }
             if ( StringUtils.isBlank( yamlString ) ) {

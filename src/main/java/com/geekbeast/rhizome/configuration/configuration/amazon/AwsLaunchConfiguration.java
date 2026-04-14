@@ -20,22 +20,22 @@
 
 package com.geekbeast.rhizome.configuration.configuration.amazon;
 
-import com.amazonaws.regions.Regions;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
+import software.amazon.awssdk.regions.Region;
 
 import java.util.Optional;
 
 public class AwsLaunchConfiguration implements AmazonLaunchConfiguration {
-    public static final  String                      BUCKET_FIELD   = "bucket";
-    public static final  String                      FOLDER_FIELD   = "folder";
-    public static final  String                      REGION_FIELD   = "region";
-    private static final String                      DEFAULT_FOLDER = "";
-    private final        String                      bucket;
-    private final        String                      folder;
-    private final        Optional<Regions> region;
+    public static final  String            BUCKET_FIELD   = "bucket";
+    public static final  String            FOLDER_FIELD   = "folder";
+    public static final  String            REGION_FIELD   = "region";
+    private static final String            DEFAULT_FOLDER = "";
+    private final        String            bucket;
+    private final        String            folder;
+    private final        Optional<Region>  region;
 
     @JsonCreator
     public AwsLaunchConfiguration(
@@ -57,12 +57,12 @@ public class AwsLaunchConfiguration implements AmazonLaunchConfiguration {
             this.folder = rawFolder;
         }
 
-        this.region = region.map( Regions::fromName );
+        this.region = region.map( Region::of );
     }
 
     @Override
     @JsonProperty( REGION_FIELD )
-    public Optional<Regions> getRegion() {
+    public Optional<Region> getRegion() {
         return region;
     }
 
